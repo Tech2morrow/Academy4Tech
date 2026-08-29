@@ -1,0 +1,6 @@
+---
+import { getCollection } from 'astro:content';import BaseLayout from '@/layouts/BaseLayout.astro';import Breadcrumbs from '@/components/Breadcrumbs.astro';import ContentCard from '@/components/ContentCard.astro';import {isPublished,slugify} from '@/utils/content';
+export async function getStaticPaths(){const posts=(await getCollection('blog')).filter(isPublished);const tags=[...new Set(posts.flatMap(item=>item.data.tags))];return tags.map(tag=>({params:{tag:slugify(tag)},props:{tag,posts:posts.filter(item=>item.data.tags.includes(tag))}}));}
+const {tag,posts}=Astro.props;
+---
+<BaseLayout title={`${tag} Articles`} description={`Academy4Tech articles tagged ${tag}.`}><section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog'},{label:tag}]}/><div class="eyebrow">Blog tag</div><h1>{tag}</h1><p>{posts.length} {posts.length===1?'article':'articles'} tagged {tag}.</p></div></section><section class="section"><div class="shell"><div class="content-grid">{posts.map(entry=><ContentCard href={`/blog/${entry.id}`} title={entry.data.title} description={entry.data.description} category={entry.data.category} meta={entry.data.readingTime} tags={entry.data.tags} action="Read article" />)}</div></div></section></BaseLayout>

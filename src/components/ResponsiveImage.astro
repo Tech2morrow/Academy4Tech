@@ -1,0 +1,34 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  class?: string;
+  sizes?: string;
+  eager?: boolean;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className,
+  sizes = '100vw',
+  eager = false
+} = Astro.props;
+---
+<picture class={className}>
+  <source srcset={`${src}.avif`} type="image/avif" sizes={sizes} />
+  <source srcset={`${src}.webp`} type="image/webp" sizes={sizes} />
+  <img
+    src={`${src}.webp`}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : 'auto'}
+    decoding="async"
+  />
+</picture>

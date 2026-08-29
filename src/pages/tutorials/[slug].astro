@@ -1,0 +1,20 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import ContentCard from '@/components/ContentCard.astro';
+import SocialShare from '@/components/SocialShare.astro';
+import ArticleEnhancements from '@/components/ArticleEnhancements.astro';
+import Icon from '@/components/Icon.astro';
+import { isPublished } from '@/utils/content';
+export async function getStaticPaths(){return (await getCollection('tutorials')).filter(isPublished).map(entry=>({params:{slug:entry.id},props:{entry}}));}
+const {entry}=Astro.props; const {Content,headings}=await render(entry);
+const related=(await getCollection('projects')).filter(isPublished).filter(item=>item.data.tags.some(tag=>entry.data.tags.includes(tag))||item.data.category===entry.data.category).slice(0,3);
+const schema={'@context':'https://schema.org','@type':'TechArticle',headline:entry.data.title,description:entry.data.description,datePublished:entry.data.publishedDate.toISOString(),dateModified:(entry.data.updatedDate??entry.data.publishedDate).toISOString(),author:{'@type':'Organization',name:'Academy4Tech'},mainEntityOfPage:Astro.url.href};
+---
+<BaseLayout title={entry.data.title} description={entry.data.description} image={entry.data.image} type="article">
+  <section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Tutorials',href:'/tutorials'},{label:entry.data.title}]} /><div class="page-hero-grid"><div><div class="eyebrow">{entry.data.category} tutorial</div><h1>{entry.data.title}</h1><p>{entry.data.description}</p><div class="page-meta"><span>{entry.data.difficulty}</span>{entry.data.technologies.map(value=><span>{value}</span>)}</div></div>{entry.data.youtube&&<a class="button" href={entry.data.youtube} target="_blank" rel="noopener noreferrer"><Icon name="play" size={18}/> Watch companion videos</a>}</div></div></section>
+  <div class="shell article-shell"><article class="article"><div class="requirements"><div class="requirement-card"><h2>Requirements</h2><ul>{entry.data.requirements.map(value=><li>{value}</li>)}</ul></div><div class="requirement-card"><h2>Technologies</h2><ul>{entry.data.technologies.map(value=><li>{value}</li>)}</ul></div></div><div class="prose"><Content /></div><SocialShare title={entry.data.title}/></article><aside class="article-aside"><nav class="toc" aria-label="On this page"><h2>On this page</h2><ul>{headings.filter(item=>item.depth<=3).map(item=><li><a href={`#${item.slug}`}>{item.text}</a></li>)}</ul></nav></aside></div>
+  {related.length>0&&<section class="section surface-section"><div class="shell"><div class="section-head"><div><div class="eyebrow">Apply it</div><h2>Related projects.</h2></div></div><div class="content-grid">{related.map(item=><ContentCard href={`/projects/${item.id}`} title={item.data.title} description={item.data.description} category={item.data.category} meta={item.data.difficulty} tags={item.data.technologies} action="View project" />)}</div></div></section>}
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script><ArticleEnhancements />
+</BaseLayout>

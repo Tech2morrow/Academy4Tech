@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro';
+interface Props { icon?: string; label?: string; class?: string; }
+const { icon = 'robot', label = 'Engineering system illustration', class: className = '' } = Astro.props;
+---
+<div class:list={['tech-visual', className]} role="img" aria-label={label}>
+  <div class="visual-grid"></div>
+  <div class="visual-ring ring-one"></div><div class="visual-ring ring-two"></div>
+  <span class="visual-chip chip-one"><Icon name="chip" size={22} /></span>
+  <span class="visual-chip chip-two"><Icon name="code" size={22} /></span>
+  <span class="visual-chip chip-three"><Icon name="network" size={22} /></span>
+  <div class="visual-core"><span>BUILD / 01</span><Icon name={icon} size={88} /><strong>IDEA → SYSTEM</strong></div>
+  <svg class="visual-trace" viewBox="0 0 540 420" aria-hidden="true"><path d="M20 210h84l42-56h75l52-70h126l52 58h69"/><path d="M20 300h130l54 54h152l42-47h122"/><circle cx="221" cy="154" r="5"/><circle cx="356" cy="354" r="5"/></svg>
+</div>

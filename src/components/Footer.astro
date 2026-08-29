@@ -1,0 +1,21 @@
+---
+import { SITE, topics } from '@/data/site';
+const links = [
+  ['GitHub', SITE.social.github], ['YouTube', SITE.social.youtube], ['LinkedIn', SITE.social.linkedin], ['Instagram', SITE.social.instagram]
+];
+---
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div class="footer-intro">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Academy<span>4</span>Tech</span></a>
+      <p>Practical engineering education for people who learn by building.</p>
+      <div class="social-row">
+        {links.map(([label, href]) => <a href={href} target="_blank" rel="noopener noreferrer">{label}<span class="sr-only"> (opens in a new tab)</span></a>)}
+      </div>
+    </div>
+    <div><h2>Explore</h2><a href="/learn">Learning paths</a><a href="/projects">Projects</a><a href="/tutorials">Tutorials</a><a href="/courses/interest">Course interest</a></div>
+    <div><h2>Popular topics</h2>{topics.slice(0, 5).map(topic => <a href={`/learn/${topic.slug}`}>{topic.name}</a>)}</div>
+    <div><h2>Academy4Tech</h2><a href="/community">Community</a><a href="/about">About</a><a href="/resources">Resources</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a></div>
+  </div>
+  <div class="shell footer-bottom"><p>© {new Date().getFullYear()} {SITE.owner} · Academy4Tech</p><p class="signal"><span></span> Learn. Build. Innovate.</p></div>
+</footer>

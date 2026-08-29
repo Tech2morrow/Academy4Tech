@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import ContentCard from '@/components/ContentCard.astro';
+import ResponsiveImage from '@/components/ResponsiveImage.astro';
+import { isPublished } from '@/utils/content';
+const projects = (await getCollection('projects')).filter(isPublished).sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.title.localeCompare(b.data.title));
+const categories = [...new Set(projects.map(item => item.data.category))].sort();
+const difficulties = [...new Set(projects.map(item => item.data.difficulty))];
+---
+<BaseLayout title="Engineering Projects" description="Explore real Academy4Tech robotics, Arduino, drone and embedded engineering project records.">
+  <section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Projects'}]} /><div class="page-hero-grid"><div><div class="eyebrow">Project library</div><h1>Build from real engineering records.</h1><p>Explore migrated Academy4Tech prototypes and open-source systems. Missing facts stay marked as missing; repositories remain the technical source of truth.</p><div class="page-meta"><span>{projects.length} documented projects</span><span>{categories.length} project areas</span></div></div><ResponsiveImage class="page-hero-photo" src="/images/ai/project-showcase" alt="Engineering project showcase with a LiDAR rover, drone payload and embedded electronics" width={1821} height={864} sizes="(max-width: 760px) 100vw, 44vw" eager /></div></div></section>
+  <section class="section"><div class="shell">
+    <div class="filter-bar"><label for="project-search">Filter projects</label><input id="project-search" type="search" placeholder="Search title or technology" data-filter-search /><label class="sr-only" for="project-category">Category</label><select id="project-category" data-filter-category><option value="">All categories</option>{categories.map(value => <option value={value.toLowerCase()}>{value}</option>)}</select><label class="sr-only" for="project-difficulty">Difficulty</label><select id="project-difficulty" data-filter-difficulty><option value="">All levels</option>{difficulties.map(value => <option value={value.toLowerCase()}>{value}</option>)}</select></div>
+    <div class="content-grid" data-filter-grid>{projects.map(entry => <div data-filter-item data-category={entry.data.category.toLowerCase()} data-difficulty={entry.data.difficulty.toLowerCase()} data-search={`${entry.data.title} ${entry.data.description} ${entry.data.technologies.join(' ')} ${entry.data.tags.join(' ')}`.toLowerCase()}><ContentCard href={`/projects/${entry.id}`} title={entry.data.title} description={entry.data.description} category={entry.data.category} meta={entry.data.difficulty} tags={entry.data.technologies} icon={entry.data.category === 'Robotics' ? 'rover' : entry.data.category === 'Drones' ? 'drone' : 'circuit'} action="View project" /></div>)}</div>
+    <p class="empty-state" hidden data-filter-empty>No projects match those filters.</p>
+  </div></section>
+</BaseLayout>
+<script>
+  const controls = [...document.querySelectorAll('[data-filter-search],[data-filter-category],[data-filter-difficulty]')];
+  const runFilter = () => {
+    const searchInput = document.querySelector('[data-filter-search]');
+    const categoryInput = document.querySelector('[data-filter-category]');
+    const difficultyInput = document.querySelector('[data-filter-difficulty]');
+    const query = searchInput instanceof HTMLInputElement ? searchInput.value.toLowerCase() : '';
+    const category = categoryInput instanceof HTMLSelectElement ? categoryInput.value : '';
+    const difficulty = difficultyInput instanceof HTMLSelectElement ? difficultyInput.value : '';
+    let visible = 0;
+    document.querySelectorAll('[data-filter-item]').forEach(item => {
+      if (!(item instanceof HTMLElement)) return;
+      const show = (!query || item.dataset.search?.includes(query)) && (!category || item.dataset.category === category) && (!difficulty || item.dataset.difficulty === difficulty);
+      item.hidden = !show; if (show) visible++;
+    });
+    const empty = document.querySelector('[data-filter-empty]'); if (empty instanceof HTMLElement) empty.hidden = visible > 0;
+  };
+  controls.forEach(control => { control.addEventListener('input', runFilter); control.addEventListener('change', runFilter); });
+</script>

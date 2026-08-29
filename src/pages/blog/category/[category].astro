@@ -1,0 +1,6 @@
+---
+import { getCollection } from 'astro:content';import BaseLayout from '@/layouts/BaseLayout.astro';import Breadcrumbs from '@/components/Breadcrumbs.astro';import ContentCard from '@/components/ContentCard.astro';import {isPublished,slugify} from '@/utils/content';
+export async function getStaticPaths(){const posts=(await getCollection('blog')).filter(isPublished);const categories=[...new Set(posts.map(item=>item.data.category))];return categories.map(category=>({params:{category:slugify(category)},props:{category,posts:posts.filter(item=>item.data.category===category)}}));}
+const {category,posts}=Astro.props;
+---
+<BaseLayout title={`${category} Articles`} description={`Academy4Tech articles filed under ${category}.`}><section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog'},{label:category}]}/><div class="eyebrow">Blog category</div><h1>{category}</h1><p>{posts.length} {posts.length===1?'article':'articles'} in this category.</p></div></section><section class="section"><div class="shell"><div class="content-grid">{posts.map(entry=><ContentCard href={`/blog/${entry.id}`} title={entry.data.title} description={entry.data.description} category={entry.data.category} meta={entry.data.readingTime} tags={entry.data.tags} action="Read article" />)}</div></div></section></BaseLayout>

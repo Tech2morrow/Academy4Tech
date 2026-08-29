@@ -1,0 +1,16 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';import Breadcrumbs from '@/components/Breadcrumbs.astro';import Icon from '@/components/Icon.astro';import {SITE} from '@/data/site';
+const resources=[
+  {title:'WildeBeest Pro',description:'Open-source files for the Academy4Tech mobile robotics platform.',href:'https://github.com/Tech2morrow/Wildebeest_Pro',kind:'GitHub repository',icon:'rover'},
+  {title:'Automatic Pet Feeder',description:'Arduino source for the documented timed feeder project.',href:'https://github.com/Tech2morrow/Pet_Feeder',kind:'GitHub repository',icon:'chip'},
+  {title:'Logitech F710 ROS GUI',description:'Python and KivyMD joystick visualization project.',href:'https://github.com/Tech2morrow/Logitech-F710',kind:'GitHub repository',icon:'nodes'},
+  {title:'Python 3.x playlist',description:'Free Academy4Tech video lessons linked from the original site.',href:'https://www.youtube.com/playlist?list=PLfDK_vJhZlEztnzWSK2oxScFUz_TVEWcN',kind:'YouTube playlist',icon:'play'},
+  {title:'Python downloads',description:'Official installers and release information for Python 3.',href:'https://www.python.org/downloads/',kind:'Official tool',icon:'code'},
+  {title:'Visual Studio Code',description:'A general-purpose editor used across Python and embedded workflows.',href:'https://code.visualstudio.com/',kind:'Official tool',icon:'terminal'}
+];
+---
+<BaseLayout title="Engineering Resources" description="Verified Academy4Tech source repositories, video learning links and development tools.">
+  <section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Resources'}]}/><div class="page-hero-grid"><div><div class="eyebrow">Resource library</div><h1>Useful links, without the clutter.</h1><p>Verified project repositories, official development tools and learning links preserved from the original Academy4Tech site.</p></div><a class="button button-secondary" href={SITE.social.github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={19}/> Tech2morrow on GitHub</a></div></div></section>
+  <section class="section"><div class="shell"><div class="content-grid">{resources.map(item=><article class="content-card"><div class="card-visual"><span>{item.kind}</span><Icon name={item.icon} size={42}/></div><div class="card-body"><div class="card-kicker"><span>{item.kind}</span></div><h3>{item.title}</h3><p>{item.description}</p><a class="text-link" href={item.href} target="_blank" rel="noopener noreferrer">Open resource <Icon name="external" size={17}/></a></div></article>)}</div></div></section>
+  <section class="section surface-section"><div class="shell"><div class="section-head"><div><div class="eyebrow">From the original site</div><h2>Legacy inspiration index.</h2></div><div><p>See the organizations and technology programs highlighted on the former Academy4Tech Inspirations page.</p><a class="text-link" href="/resources/inspirations">View the inspiration index <Icon name="arrow" size={18}/></a></div></div></div></section>
+</BaseLayout>

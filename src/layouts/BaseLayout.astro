@@ -1,0 +1,37 @@
+---
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { SITE } from '@/data/site';
+interface Props { title?: string; description?: string; image?: string; noindex?: boolean; type?: 'website' | 'article'; }
+const { title = SITE.tagline, description = SITE.description, image = '/images/og-default.svg', noindex = false, type = 'website' } = Astro.props;
+const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const imageUrl = new URL(image, SITE.url).href;
+const organization = { '@context': 'https://schema.org', '@type': 'Organization', name: SITE.name, url: SITE.url, logo: new URL('/images/og-default.svg', SITE.url).href, founder: { '@type': 'Person', name: SITE.owner }, sameAs: [SITE.social.github, SITE.social.youtube, SITE.social.linkedin, SITE.social.instagram] };
+const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: SITE.url, potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/search?q={search_term_string}`, 'query-input': 'required name=search_term_string' } };
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Academy4Tech RSS" href="/rss.xml" />
+    <meta property="og:type" content={type} /><meta property="og:site_name" content={SITE.name} /><meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={fullTitle} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={imageUrl} />
+    <title>{fullTitle}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organization)}></script>
+    {Astro.url.pathname === '/' && <script is:inline type="application/ld+json" set:html={JSON.stringify(website)}></script>}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+  </body>
+</html>

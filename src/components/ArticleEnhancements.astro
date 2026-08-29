@@ -1,0 +1,15 @@
+<script>
+  document.querySelectorAll('.prose pre').forEach(pre => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = 'Copy';
+    button.setAttribute('aria-label', 'Copy code');
+    Object.assign(button.style, { position: 'absolute', top: '5px', right: '7px', zIndex: '2', border: '1px solid rgba(157,190,219,.2)', borderRadius: '7px', background: '#0d1c2c', color: '#c5d4df', padding: '3px 9px', fontSize: '.65rem', cursor: 'pointer' });
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(pre.querySelector('code')?.textContent || '');
+      button.textContent = 'Copied';
+      window.setTimeout(() => button.textContent = 'Copy', 1600);
+    });
+    pre.append(button);
+  });
+</script>

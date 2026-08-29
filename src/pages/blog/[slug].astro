@@ -1,0 +1,22 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import ContentCard from '@/components/ContentCard.astro';
+import SocialShare from '@/components/SocialShare.astro';
+import ArticleEnhancements from '@/components/ArticleEnhancements.astro';
+import Icon from '@/components/Icon.astro';
+import { formatDate, isPublished, slugify } from '@/utils/content';
+export async function getStaticPaths(){return (await getCollection('blog')).filter(isPublished).map(entry=>({params:{slug:entry.id},props:{entry}}));}
+const {entry}=Astro.props;const {Content,headings}=await render(entry);
+const posts=(await getCollection('blog')).filter(isPublished).sort((a,b)=>b.data.publishedDate.valueOf()-a.data.publishedDate.valueOf());
+const index=posts.findIndex(item=>item.id===entry.id);const previous=posts[index+1];const next=posts[index-1];
+const related=posts.filter(item=>item.id!==entry.id&&(item.data.category===entry.data.category||item.data.tags.some(tag=>entry.data.tags.includes(tag)))).slice(0,3);
+const schema={'@context':'https://schema.org','@type':'Article',headline:entry.data.title,description:entry.data.description,image:new URL(entry.data.image,Astro.site).href,datePublished:entry.data.publishedDate.toISOString(),dateModified:(entry.data.updatedDate??entry.data.publishedDate).toISOString(),author:{'@type':'Organization',name:entry.data.author,url:new URL('/',Astro.site).href},publisher:{'@type':'Organization',name:'Academy4Tech'},mainEntityOfPage:Astro.url.href};
+---
+<BaseLayout title={entry.data.seoTitle??entry.data.title} description={entry.data.seoDescription??entry.data.description} image={entry.data.image} type="article">
+  <section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog'},{label:entry.data.title}]}/><div class="page-hero-grid"><div><div class="eyebrow"><a href={`/blog/category/${slugify(entry.data.category)}`}>{entry.data.category}</a></div><h1>{entry.data.title}</h1><p>{entry.data.description}</p><div class="page-meta"><span>{entry.data.author}</span><span>{formatDate(entry.data.publishedDate)}</span>{entry.data.updatedDate&&<span>Updated {formatDate(entry.data.updatedDate)}</span>}{entry.data.readingTime&&<span>{entry.data.readingTime}</span>}</div><div class="tag-row">{entry.data.tags.map(tag=><a class="tag" href={`/blog/tag/${slugify(tag)}`}>{tag}</a>)}</div></div>{entry.data.github&&<a class="button button-secondary" href={entry.data.github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={18}/> GitHub</a>}</div></div></section>
+  <div class="shell article-shell"><article class="article"><div class="prose"><Content/></div><SocialShare title={entry.data.title}/><nav class="requirements" aria-label="Adjacent articles">{previous&&<div class="requirement-card"><h2>Previous article</h2><a class="text-link" href={`/blog/${previous.id}`}>{previous.data.title}</a></div>}{next&&<div class="requirement-card"><h2>Next article</h2><a class="text-link" href={`/blog/${next.id}`}>{next.data.title}</a></div>}</nav></article><aside class="article-aside"><nav class="toc" aria-label="On this page"><h2>On this page</h2><ul>{headings.filter(item=>item.depth<=3).map(item=><li><a href={`#${item.slug}`}>{item.text}</a></li>)}</ul></nav></aside></div>
+  {related.length>0&&<section class="section surface-section"><div class="shell"><div class="section-head"><div><div class="eyebrow">Continue reading</div><h2>Related articles.</h2></div></div><div class="content-grid">{related.map(item=><ContentCard href={`/blog/${item.id}`} title={item.data.title} description={item.data.description} category={item.data.category} meta={item.data.readingTime} tags={item.data.tags} action="Read article" />)}</div></div></section>}
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script><ArticleEnhancements/>
+</BaseLayout>

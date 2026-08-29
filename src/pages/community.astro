@@ -1,0 +1,49 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import ResponsiveImage from '@/components/ResponsiveImage.astro';
+import { SITE } from '@/data/site';
+
+const channels = [
+  { name: 'GitHub', href: SITE.social.github, description: 'Inspect open repositories, source files and project history.', icon: 'github' },
+  { name: 'YouTube', href: SITE.social.youtube, description: 'Follow free engineering tutorials and the Python learning series.', icon: 'play' },
+  { name: 'LinkedIn', href: SITE.social.linkedin, description: 'See Academy4Tech updates and connect professionally.', icon: 'network' },
+  { name: 'Instagram', href: SITE.social.instagram, description: 'Follow visual workshop updates and project moments.', icon: 'aperture' },
+  { name: 'Facebook', href: SITE.social.facebook, description: 'Keep up with posts from the verified Academy4Tech page.', icon: 'nodes' }
+];
+---
+<BaseLayout title="Engineering Community" description="Join the Academy4Tech learning community across verified channels, share projects and learn with other builders." image="/images/ai/community-workshop.webp">
+  <section class="page-hero community-hero">
+    <div class="shell">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Community' }]} />
+      <div class="page-hero-grid">
+        <div><div class="eyebrow">Build together</div><h1>A community for people who learn by making.</h1><p>Ask better questions, compare approaches and share what you discover while building robotics, IoT, AI and embedded systems.</p><div class="hero-actions"><a class="button" href="#channels">Find a channel <Icon name="arrow" size={18} /></a><a class="button button-secondary" href="/courses/interest">Tell us what you want to learn</a></div></div>
+        <ResponsiveImage class="page-hero-photo" src="/images/ai/community-workshop" alt="Engineering learners and a mentor collaborating around a mobile robot in a makerspace" width={1792} height={877} sizes="(max-width: 760px) 100vw, 44vw" eager />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="channels">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Verified links</div><h2>Choose your community channel.</h2></div><p>These destinations were confirmed from the current Academy4Tech website. External links open on their original platforms.</p></div>
+      <div class="community-grid">
+        {channels.map(channel => <a class="community-card" href={channel.href} target="_blank" rel="noopener noreferrer"><span class="topic-icon"><Icon name={channel.icon} /></span><h3>{channel.name}</h3><p>{channel.description}</p><span class="text-link">Open channel <Icon name="external" size={17} /></span></a>)}
+        <article class="community-card community-card-disabled" aria-label="Discord invite coming soon"><span class="topic-icon"><Icon name="nodes" /></span><div class="status-pill">Invite not published</div><h3>Discord</h3><p>A public Academy4Tech Discord invite is not currently listed on the official website. This card is ready for the verified invite when one is available.</p><span class="muted-link">Coming soon</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-section">
+    <div class="shell guideline-grid">
+      <div><div class="eyebrow">Community guidelines</div><h2>Make every conversation useful.</h2><p>Strong technical communities are generous, specific and honest about what has—and has not—been tested.</p></div>
+      <div class="guideline-list">
+        <article><strong>01</strong><div><h3>Show your context</h3><p>Share the goal, board, software version, wiring details and exact error before asking for help.</p></div></article>
+        <article><strong>02</strong><div><h3>Respect every skill level</h3><p>Welcome beginner questions, explain unfamiliar terms and critique the work without attacking the learner.</p></div></article>
+        <article><strong>03</strong><div><h3>Build safely and honestly</h3><p>Protect private information, credit sources, label unverified claims and call out electrical or mechanical risks.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight"><div class="shell"><div class="cta-panel"><div><div class="eyebrow">Have a learning goal?</div><h2>Help shape future course topics.</h2><p>Tell Academy4Tech what you want to build, your current experience and how you prefer to learn.</p></div><div class="cta-actions"><a class="button" href="/courses/interest">Complete the interest form</a><a class="button button-secondary" href="/projects">Explore projects</a></div></div></div></section>
+</BaseLayout>

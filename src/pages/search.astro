@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';import Breadcrumbs from '@/components/Breadcrumbs.astro';import Icon from '@/components/Icon.astro';
+---
+<BaseLayout title="Search" description="Search Academy4Tech projects, tutorials, articles and learning topics.">
+  <section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Search'}]}/><div class="eyebrow">Global search</div><h1>Find a topic, tool or build.</h1><p>Search projects, tutorials, blog articles, technologies and learning paths without a backend.</p><div class="search-box"><Icon name="search"/><label class="sr-only" for="global-search">Search Academy4Tech</label><input id="global-search" type="search" placeholder="Try ROS, ESP32, Python or sensors" autofocus/></div><p data-search-count>Start typing to search.</p></div></section>
+  <section class="section"><div class="shell"><div class="search-results" data-search-results></div></div></section>
+</BaseLayout>
+<script>
+  type SearchItem={type:string;title:string;description:string;url:string;keywords:string};
+  const input=document.querySelector('#global-search');const container=document.querySelector('[data-search-results]');const count=document.querySelector('[data-search-count]');let index:SearchItem[]=[];
+  fetch('/search-index.json').then(response=>response.json()).then(data=>{index=data;const initial=new URLSearchParams(location.search).get('q')||'';if(input instanceof HTMLInputElement&&initial){input.value=initial;render();}});
+  const escapeHtml=(value:string)=>value.replace(/[&<>'"]/g,(char:string)=>({ '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;' } as Record<string,string>)[char]);
+  const render=()=>{if(!(input instanceof HTMLInputElement)||!(container instanceof HTMLElement))return;const query=input.value.trim().toLowerCase();if(!query){container.replaceChildren();if(count)count.textContent='Start typing to search.';return;}const terms=query.split(/\s+/);const results=index.map(item=>{const haystack=`${item.title} ${item.description} ${item.keywords}`.toLowerCase();const score=terms.reduce((sum,term)=>sum+(item.title.toLowerCase().includes(term)?5:0)+(haystack.includes(term)?1:0),0);return{...item,score};}).filter(item=>item.score>=terms.length).sort((a,b)=>b.score-a.score).slice(0,30);container.innerHTML=results.map(item=>`<article class="search-result"><small>${escapeHtml(item.type)}</small><div><h2><a href="${item.url}">${escapeHtml(item.title)}</a></h2><p>${escapeHtml(item.description)}</p></div><a class="text-link" href="${item.url}">Open →</a></article>`).join('');if(count)count.textContent=`${results.length} result${results.length===1?'':'s'} for “${input.value}”`;};
+  input?.addEventListener('input',render);
+</script>

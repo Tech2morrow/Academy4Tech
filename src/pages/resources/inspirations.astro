@@ -1,0 +1,8 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';import Breadcrumbs from '@/components/Breadcrumbs.astro';import Icon from '@/components/Icon.astro';
+const names=['New York University Abu Dhabi','NASA','Tesla','Tesla Bot','SpaceX','Zoox','Boston Dynamics','Waymo','Technology Innovation Institute','Indian Space Research Organisation'];
+---
+<BaseLayout title="Engineering Inspirations" description="The robotics, aerospace and technology organizations highlighted on the legacy Academy4Tech site.">
+  <section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Resources',href:'/resources'},{label:'Inspirations'}]}/><div class="eyebrow">Legacy content index</div><h1>Engineering inspirations.</h1><p>The former Academy4Tech site highlighted the following organizations and programs as sources of inspiration in robotics, autonomy, space and advanced technology.</p></div></section>
+  <section class="section"><div class="shell"><div class="topic-grid">{names.map((name,index)=><article class="topic-card"><span class="topic-icon"><Icon name={index%3===0?'robot':index%3===1?'drone':'network'}/></span><h3>{name}</h3><p>Included in the original Academy4Tech Inspirations collection.</p></article>)}</div><p class="article-lead" style="margin-top:30px">The outdated third-party company descriptions and imagery were not copied. Visit each organization's official website for current information and usage rights.</p></div></section>
+</BaseLayout>

@@ -1,0 +1,18 @@
+<section class="newsletter" aria-labelledby="newsletter-title">
+  <div><h2 id="newsletter-title">Build notes, when they are ready.</h2><p>Newsletter-ready by design. Connect this form to a Cloudflare-compatible provider when you choose one.</p></div>
+  <div>
+    <form class="newsletter-form" data-newsletter-placeholder>
+      <label class="sr-only" for="newsletter-email">Email address</label>
+      <input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+      <button class="button" type="submit">Join the list</button>
+    </form>
+    <p class="newsletter-note" data-newsletter-note>No address is sent or stored in this placeholder version.</p>
+  </div>
+</section>
+<script>
+  document.querySelector('[data-newsletter-placeholder]')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const note = document.querySelector('[data-newsletter-note]');
+    if (note) note.textContent = 'Newsletter signup is not connected yet. Your address was not sent.';
+  });
+</script>

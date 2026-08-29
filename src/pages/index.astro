@@ -1,0 +1,117 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/Icon.astro';
+import ContentCard from '@/components/ContentCard.astro';
+import Newsletter from '@/components/Newsletter.astro';
+import ResponsiveImage from '@/components/ResponsiveImage.astro';
+import { paths, SITE, topics } from '@/data/site';
+
+const now = new Date();
+const visible = <T extends { data: { draft: boolean; publishedDate: Date } }>(items: T[]) => items.filter(item => !item.data.draft && item.data.publishedDate <= now);
+const [projectEntries, tutorialEntries, blogEntries] = await Promise.all([getCollection('projects'), getCollection('tutorials'), getCollection('blog')]);
+const projects = visible(projectEntries).sort((a, b) => Number(b.data.featured) - Number(a.data.featured)).slice(0, 3);
+const tutorials = visible(tutorialEntries).sort((a, b) => Number(b.data.featured) - Number(a.data.featured)).slice(0, 3);
+const posts = visible(blogEntries).sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf()).slice(0, 3);
+const iconFor = (value: string) => value.toLowerCase().includes('robot') || value === 'ROS' ? 'robot' : value.toLowerCase().includes('python') ? 'code' : value.toLowerCase().includes('drone') ? 'drone' : 'circuit';
+---
+<BaseLayout title="Learn. Build. Innovate." description="Master robotics, IoT, Python, AI and embedded systems through practical engineering projects with Academy4Tech.">
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">Practical engineering education</div>
+        <h1>Learn. Build. <span>Innovate.</span></h1>
+        <p>Master robotics, IoT, Python, AI and embedded systems through practical projects, clear tutorials and open engineering resources.</p>
+        <div class="hero-actions"><a class="button" href="/learn">Explore learning <Icon name="arrow" size={18} /></a><a class="button button-secondary" href="/projects">Explore projects</a><a class="button button-secondary" href={SITE.social.youtube} target="_blank" rel="noopener noreferrer"><Icon name="play" size={18} /> Watch free tutorials</a></div>
+        <div class="hero-proof"><span><i></i> Project-based</span><span><i></i> Beginner-friendly</span><span><i></i> Open-source friendly</span></div>
+      </div>
+      <div class="hero-image-wrap">
+        <ResponsiveImage class="hero-photo" src="/images/ai/hero-engineering-lab" alt="Two engineering learners wiring a robot arm and mobile rover in a technology workshop" width={1536} height={1024} sizes="(max-width: 1040px) 100vw, 48vw" eager />
+        <div class="image-badges" aria-hidden="true"><span>Robotics</span><span>IoT</span><span>AI vision</span></div>
+        <div class="image-caption"><span></span> Build skills on real systems</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-section">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Choose a subject</div><h2>What do you want to learn?</h2></div><p>Build focused knowledge in one area, or combine subjects into a complete engineering system.</p></div>
+      <div class="topic-grid">
+        {topics.slice(0, 12).map(topic => <a class="topic-card" href={`/learn/${topic.slug}`}><span class="topic-icon"><Icon name={topic.icon} /></span><h3>{topic.name}</h3><p>{topic.short}</p><span class="text-link">Explore <Icon name="arrow" size={17} /></span></a>)}
+      </div>
+      <p style="margin-top:24px"><a class="text-link" href="/learn">View all learning topics <Icon name="arrow" size={18} /></a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Structured journeys</div><h2>Follow a learning path.</h2></div><p>Each path turns a broad goal into a sequence of connected topics. Choose the entry point that matches your current skills.</p></div>
+      <div class="path-grid">
+        {paths.map((path, index) => <article class="path-card" data-number={`0${index + 1}`}><span class="topic-icon"><Icon name={path.icon} /></span><h3>{path.name}</h3><p>{path.description}</p><div class="path-steps">{path.topics.map(slug => { const topic = topics.find(item => item.slug === slug); return topic && <a href={`/learn/${slug}`}>{topic.name}</a>; })}</div></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-section">
+    <div class="shell image-split">
+      <ResponsiveImage class="feature-photo" src="/images/ai/course-learning-path" alt="A learner connects code, sensors, a camera and a robot arm at an engineering workbench" width={1774} height={887} sizes="(max-width: 760px) 100vw, 50vw" />
+      <div class="split-copy">
+        <div class="eyebrow">Tell us what you want to build</div>
+        <h2>Find the right place to start.</h2>
+        <p>Share your interests, current experience and preferred learning format. The form takes about two minutes and helps Academy4Tech understand which courses learners want next.</p>
+        <div class="mini-steps"><span><strong>01</strong> Choose interests</span><span><strong>02</strong> Share your level</span><span><strong>03</strong> Get matched later</span></div>
+        <a class="button" href="/courses/interest">Complete the course-interest form <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-section">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Verified builds</div><h2>Featured engineering projects.</h2></div><div><p>Real project records migrated from Academy4Tech's original website—rewritten for clarity without inventing missing results.</p><a class="text-link" href="/projects">All projects <Icon name="arrow" size={18} /></a></div></div>
+      <div class="content-grid">{projects.map(entry => <ContentCard href={`/projects/${entry.id}`} title={entry.data.title} description={entry.data.description} category={entry.data.category} meta={entry.data.difficulty} tags={entry.data.technologies} icon={iconFor(entry.data.category)} action="View project" />)}</div>
+    </div>
+  </section>
+
+  <section class="section community-feature">
+    <div class="shell image-split image-split-reverse">
+      <div class="split-copy">
+        <div class="eyebrow">Learn with other builders</div>
+        <h2>A community for curious engineers.</h2>
+        <p>Bring a question, share a prototype, or follow Academy4Tech across its verified public channels. The community page gathers GitHub, YouTube and social links in one place.</p>
+        <div class="hero-actions"><a class="button" href="/community">Visit the community <Icon name="arrow" size={18} /></a><a class="button button-secondary" href={SITE.social.github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={18} /> Explore GitHub</a></div>
+      </div>
+      <ResponsiveImage class="feature-photo" src="/images/ai/community-workshop" alt="A diverse group of engineering learners collaborating around a sensor-equipped mobile robot" width={1792} height={877} sizes="(max-width: 760px) 100vw, 50vw" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Step by step</div><h2>Latest tutorials.</h2></div><div><p>Concise technical guides designed to remain readable beside a terminal or workbench.</p><a class="text-link" href="/tutorials">All tutorials <Icon name="arrow" size={18} /></a></div></div>
+      <div class="content-grid">{tutorials.map(entry => <ContentCard href={`/tutorials/${entry.id}`} title={entry.data.title} description={entry.data.description} category={entry.data.category} meta={entry.data.difficulty} tags={entry.data.technologies} icon={iconFor(entry.data.category)} action="Read tutorial" />)}</div>
+    </div>
+  </section>
+
+  <section class="section surface-section">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Watch and build</div><h2>Engineering, explained on video.</h2></div><p>The original Academy4Tech site links to free YouTube learning content, including a Python 3.x series.</p></div>
+      <div class="cta-panel"><div><h2>Continue on the Academy4Tech channel.</h2><p>Videos stay on YouTube and load only when you choose to watch, keeping this site lightweight.</p></div><div class="cta-actions"><a class="button" href="https://www.youtube.com/playlist?list=PLfDK_vJhZlEztnzWSK2oxScFUz_TVEWcN" target="_blank" rel="noopener noreferrer"><Icon name="play" size={18} /> Python playlist</a><a class="button button-secondary" href={SITE.social.youtube} target="_blank" rel="noopener noreferrer">YouTube channel</a></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Academy4Tech journal</div><h2>Latest from the workshop.</h2></div><div><p>Notes about engineering practice, learning systems and project updates.</p><a class="text-link" href="/blog">View all articles <Icon name="arrow" size={18} /></a></div></div>
+      <div class="content-grid">{posts.map(entry => <ContentCard href={`/blog/${entry.id}`} title={entry.data.title} description={entry.data.description} category={entry.data.category} meta={entry.data.readingTime} tags={entry.data.tags} icon={iconFor(entry.data.category)} action="Read article" />)}</div>
+    </div>
+  </section>
+
+  <section class="section surface-section">
+    <div class="shell"><div class="stats-strip"><div><strong>Build</strong><span>Projects that connect theory to hardware</span></div><div><strong>Test</strong><span>Measurable steps and honest limitations</span></div><div><strong>Share</strong><span>Open repositories and learning resources</span></div><div><strong>Improve</strong><span>A maintainable publishing workflow</span></div></div></div>
+  </section>
+
+  <section class="section">
+    <div class="shell"><div class="section-head"><div><div class="eyebrow">About the platform</div><h2>Engineering knowledge, shared practically.</h2></div><div><p>Academy4Tech is the personal educational website of Muhammed Nabeel, created to help knowledge seekers explore mechatronics, robotics and autonomous systems.</p><a class="text-link" href="/about">About Academy4Tech <Icon name="arrow" size={18} /></a></div></div><Newsletter /></div>
+  </section>
+
+  <section class="section-tight"><div class="shell"><div class="cta-panel"><div><div class="eyebrow">Your next build</div><h2>Start building your next project.</h2><p>Choose a learning path, inspect a real project, and turn one idea into a working system.</p></div><div class="cta-actions"><a class="button" href="/learn">Start learning</a><a class="button button-secondary" href="/projects">Explore projects</a></div></div></div></section>
+</BaseLayout>

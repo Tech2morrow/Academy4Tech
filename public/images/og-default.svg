@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Academy4Tech</title><desc id="desc">Robotics, electronics and software learning</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#0b2540"/></linearGradient><linearGradient id="line"><stop stop-color="#34d6ff"/><stop offset="1" stop-color="#6d7cff"/></linearGradient></defs>
+  <rect width="1200" height="630" rx="40" fill="url(#bg)"/>
+  <g opacity=".28" stroke="#34d6ff" fill="none"><path d="M0 92h310l44 44h220M1200 512H890l-44-44H630"/><circle cx="354" cy="136" r="8" fill="#34d6ff"/><circle cx="846" cy="468" r="8" fill="#34d6ff"/></g>
+  <g transform="translate(760 110)" fill="none" stroke="url(#line)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><path d="M70 338h300M130 338v-54l62-66 62 10 40-98"/><circle cx="192" cy="218" r="28"/><circle cx="294" cy="130" r="28"/><path d="M294 102V64h66l35 35-55 55-18-18"/></g>
+  <text x="92" y="245" fill="#9aeaff" font-family="Arial,sans-serif" font-size="30" font-weight="700" letter-spacing="6">ACADEMY4TECH</text>
+  <text x="92" y="340" fill="white" font-family="Arial,sans-serif" font-size="68" font-weight="800">Learn. Build.</text>
+  <text x="92" y="420" fill="white" font-family="Arial,sans-serif" font-size="68" font-weight="800">Innovate.</text>
+  <text x="96" y="485" fill="#a9bdd2" font-family="Arial,sans-serif" font-size="26">Robotics · IoT · Python · AI · Embedded Systems</text>
+</svg>

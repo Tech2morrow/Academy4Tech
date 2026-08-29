@@ -1,0 +1,12 @@
+---
+interface Item { label: string; href?: string; }
+const { items } = Astro.props as { items: Item[] };
+const schema = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.label, ...(item.href ? { item: new URL(item.href, Astro.site).href } : {}) }))
+};
+---
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>{items.map((item, index) => <li>{item.href && index < items.length - 1 ? <a href={item.href}>{item.label}</a> : <span aria-current={index === items.length - 1 ? 'page' : undefined}>{item.label}</span>}</li>)}</ol>
+</nav>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script>

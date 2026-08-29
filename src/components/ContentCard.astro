@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+interface Props { href: string; title: string; description: string; category: string; meta?: string; tags?: string[]; icon?: string; featured?: boolean; action?: string; }
+const { href, title, description, category, meta, tags = [], icon = 'circuit', featured = false, action = 'Explore' } = Astro.props;
+---
+<article class:list={['content-card', featured && 'featured-card']}>
+  <a class="card-visual" href={href} tabindex="-1" aria-hidden="true"><span>{category}</span><Icon name={icon} size={featured ? 58 : 42} /></a>
+  <div class="card-body">
+    <div class="card-kicker"><span>{category}</span>{meta && <span>{meta}</span>}</div>
+    <h3><a href={href}>{title}</a></h3>
+    <p>{description}</p>
+    {tags.length > 0 && <div class="tag-row">{tags.slice(0, 4).map(tag => <span>{tag}</span>)}</div>}
+    <a class="text-link" href={href}>{action} <Icon name="arrow" size={18} /></a>
+  </div>
+</article>

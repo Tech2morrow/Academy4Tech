@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+const { title, url = Astro.url.href } = Astro.props;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+<div class="share" aria-label="Share this page">
+  <strong>Share</strong>
+  <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  <a href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`} target="_blank" rel="noopener noreferrer">X</a>
+  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`} target="_blank" rel="noopener noreferrer">Facebook</a>
+  <button type="button" data-copy-url={url}><Icon name="copy" size={16} /> <span>Copy link</span></button>
+</div>
+<script>
+  document.querySelectorAll('[data-copy-url]').forEach(button => button.addEventListener('click', async () => {
+    if (!(button instanceof HTMLButtonElement)) return;
+    await navigator.clipboard.writeText(button.dataset.copyUrl || location.href);
+    const label = button.querySelector('span');
+    if (label) label.textContent = 'Copied';
+  }));
+</script>
