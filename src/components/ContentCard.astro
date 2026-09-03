@@ -1,10 +1,14 @@
 ---
 import Icon from './Icon.astro';
-interface Props { href: string; title: string; description: string; category: string; meta?: string; tags?: string[]; icon?: string; featured?: boolean; action?: string; }
-const { href, title, description, category, meta, tags = [], icon = 'circuit', featured = false, action = 'Explore' } = Astro.props;
+interface Props { href: string; title: string; description: string; category: string; meta?: string; tags?: string[]; icon?: string; featured?: boolean; action?: string; image?: string; imageAlt?: string; }
+const { href, title, description, category, meta, tags = [], icon = 'circuit', featured = false, action = 'Explore', image, imageAlt = '' } = Astro.props;
 ---
 <article class:list={['content-card', featured && 'featured-card']}>
-  <a class="card-visual" href={href} tabindex="-1" aria-hidden="true"><span>{category}</span><Icon name={icon} size={featured ? 58 : 42} /></a>
+  <a class:list={['card-visual', image && 'has-image']} href={href} tabindex="-1" aria-hidden="true">
+    {image && <img class="card-photo" src={image} alt={imageAlt} loading="lazy" decoding="async" />}
+    <span>{category}</span>
+    {!image && <Icon name={icon} size={featured ? 58 : 42} />}
+  </a>
   <div class="card-body">
     <div class="card-kicker"><span>{category}</span>{meta && <span>{meta}</span>}</div>
     <h3><a href={href}>{title}</a></h3>

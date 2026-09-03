@@ -40,6 +40,8 @@ Copy a nearby file's frontmatter, update all factual fields, write the content, 
 
 Learning-topic taxonomy is maintained in `src/data/site.ts`.
 
+The Android showcase is maintained in `src/data/apps.ts`. Add or update one app record there, place its icon and feature artwork in `public/images/apps/`, and run `pnpm build`. The homepage and `/apps` page both read from this single list.
+
 ## Project structure
 
 ```text

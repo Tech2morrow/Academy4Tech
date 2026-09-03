@@ -3,7 +3,8 @@ title: "ESP32 Development Board Schematic"
 description: "Design notes for an ESP32 board with Wi-Fi, Bluetooth and CH340-based USB programming."
 category: "PCB Design"
 tags: ["ESP32", "CH340", "PCB", "IoT"]
-imageAlt: "Technical illustration representing an ESP32 development board schematic"
+image: "/images/projects/esp32-development-board.jpg"
+imageAlt: "ESP32 development-board circuit schematic from the original Academy4Tech project page"
 featured: false
 draft: false
 publishedDate: "2026-08-11"

@@ -4,7 +4,7 @@
     button.type = 'button';
     button.textContent = 'Copy';
     button.setAttribute('aria-label', 'Copy code');
-    Object.assign(button.style, { position: 'absolute', top: '5px', right: '7px', zIndex: '2', border: '1px solid rgba(157,190,219,.2)', borderRadius: '7px', background: '#0d1c2c', color: '#c5d4df', padding: '3px 9px', fontSize: '.65rem', cursor: 'pointer' });
+    Object.assign(button.style, { position: 'absolute', top: '5px', right: '7px', zIndex: '2', border: '1px solid rgba(255,255,255,.18)', borderRadius: '7px', background: '#252d36', color: '#f4f7fa', padding: '3px 9px', fontSize: '.65rem', cursor: 'pointer' });
     button.addEventListener('click', async () => {
       await navigator.clipboard.writeText(pre.querySelector('code')?.textContent || '');
       button.textContent = 'Copied';

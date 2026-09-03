@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+import type { AndroidApp } from '@/data/apps';
+
+interface Props { app: AndroidApp; compact?: boolean; }
+const { app, compact = false } = Astro.props;
+---
+<article class:list={['app-card', compact && 'app-card-compact']}>
+  <div class="app-card-art">
+    <img class="app-feature" src={app.featureImage} alt={`${app.name} app showcase artwork`} loading="lazy" decoding="async" />
+    <img class="app-icon" src={app.icon} alt="" width="128" height="128" loading="lazy" decoding="async" />
+  </div>
+  <div class="app-card-body">
+    <div class="app-card-kicker"><span>{app.category}</span>{app.containsAds && <span>Contains ads</span>}</div>
+    <h3>{app.name}</h3>
+    <p>{app.description}</p>
+    {!compact && <dl class="app-facts"><div><dt>Designed for</dt><dd>{app.audience}</dd></div><div><dt>Store update</dt><dd>{app.updated}</dd></div></dl>}
+    <a class="text-link" href={app.playUrl} target="_blank" rel="noopener noreferrer">View on Google Play <Icon name="external" size={17} /></a>
+  </div>
+</article>

@@ -3,7 +3,8 @@ title: "Automatic Pet Feeder"
 description: "An Arduino-based timed feeder concept with three configurable feeding times, an LCD and keypad input."
 category: "Arduino"
 tags: ["Arduino", "Electronics", "Automation", "Prototyping"]
-imageAlt: "Technical illustration representing an Arduino automatic pet feeder"
+image: "/images/projects/automatic-pet-feeder.jpg"
+imageAlt: "Top view of the automatic pet feeder prototype from the original Academy4Tech project page"
 featured: true
 draft: false
 publishedDate: "2026-08-11"

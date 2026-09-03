@@ -3,7 +3,8 @@ title: "WildeBeest Pro"
 description: "An open-source mobile robotics platform for developing and testing an autonomous ground robot."
 category: "Robotics"
 tags: ["ROS", "Jetson Nano", "LiDAR", "Arduino", "Autonomy"]
-imageAlt: "Technical illustration representing the WildeBeest Pro mobile robot platform"
+image: "/images/projects/wildebeest-pro.png"
+imageAlt: "Rendered Academy4Tech autonomous mobile robot with LiDAR, electronics and ultrasonic sensors"
 featured: true
 draft: false
 publishedDate: "2026-08-11"

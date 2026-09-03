@@ -3,7 +3,8 @@ title: "ROS Joystick Control GUI"
 description: "A Python and KivyMD interface that visualizes Logitech F710 joystick data carried through ROS."
 category: "Robotics"
 tags: ["ROS", "Python", "KivyMD", "Logitech F710"]
-imageAlt: "Technical illustration representing a ROS joystick control interface"
+image: "/images/projects/ros-joystick-gui.png"
+imageAlt: "ROS joystick control interface showing buttons and live controller axes"
 featured: true
 draft: false
 publishedDate: "2026-08-11"

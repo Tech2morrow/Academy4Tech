@@ -1,0 +1,51 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import AppCard from '@/components/AppCard.astro';
+import Icon from '@/components/Icon.astro';
+import { ANDROID_DEVELOPER_URL, androidApps } from '@/data/apps';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Android apps by Academy4Tech',
+  numberOfItems: androidApps.length,
+  itemListElement: androidApps.map((app, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: { '@type': 'SoftwareApplication', name: app.name, applicationCategory: app.category, operatingSystem: 'Android', url: app.playUrl }
+  }))
+};
+---
+<BaseLayout title="Android Apps" description="Explore Android education and productivity apps developed by Academy4Tech.">
+  <section class="page-hero apps-hero">
+    <div class="shell">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Apps' }]} />
+      <div class="page-hero-grid">
+        <div>
+          <div class="eyebrow">Built by Academy4Tech</div>
+          <h1>Android apps for learning, creating and focusing.</h1>
+          <p>Explore the current Academy4Tech app collection—from robotics and Python learning to private notes and better screen habits.</p>
+          <div class="hero-actions"><a class="button" href="#app-library">Explore all apps <Icon name="arrow" size={18} /></a><a class="button button-secondary" href={ANDROID_DEVELOPER_URL} target="_blank" rel="noopener noreferrer">Open Google Play <Icon name="external" size={17} /></a></div>
+          <div class="page-meta"><span>{androidApps.length} published apps</span><span>Education & tools</span><span>Android</span></div>
+        </div>
+        <div class="apps-hero-art">
+          <img src={androidApps[0].featureImage} alt="Academy4Tech Android app learning interface" width="832" height="470" loading="eager" fetchpriority="high" />
+          <div class="apps-icon-stack" aria-hidden="true">{androidApps.slice(0, 4).map(app => <img src={app.icon} alt="" width="64" height="64" />)}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="app-library">
+    <div class="shell">
+      <div class="section-head"><div><div class="eyebrow">Current collection</div><h2>Choose your next app.</h2></div><p>Each card links to the official Academy4Tech listing on Google Play. App names and store details were checked on 3 September 2026.</p></div>
+      <div class="app-grid">{androidApps.map(app => <AppCard app={app} />)}</div>
+    </div>
+  </section>
+
+  <section class="section-tight surface-section">
+    <div class="shell"><div class="cta-panel"><div><div class="eyebrow">More apps are coming</div><h2>Follow the developer page for new releases.</h2><p>This showcase is maintained from the public Academy4Tech Google Play catalog.</p></div><a class="button" href={ANDROID_DEVELOPER_URL} target="_blank" rel="noopener noreferrer">View Academy4Tech on Google Play <Icon name="external" size={17} /></a></div></div>
+  </section>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</BaseLayout>

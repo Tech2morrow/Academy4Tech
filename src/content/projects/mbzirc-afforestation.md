@@ -3,7 +3,8 @@ title: "Drone Afforestation Payload"
 description: "A concept and prototype for a DJI M600 Pro planting payload using a 3D-printed seed container and pneumatic firing mechanism."
 category: "Drones"
 tags: ["DJI M600 Pro", "Arduino", "3D Printing", "Vision", "Prototyping"]
-imageAlt: "Technical illustration representing a drone-mounted seed planting payload"
+image: "/images/projects/mbzirc-afforestation.png"
+imageAlt: "Rendered DJI M600 Pro drone carrying the Academy4Tech afforestation payload"
 featured: true
 draft: false
 publishedDate: "2026-08-11"
