@@ -1,6 +1,6 @@
 # Learning visual asset guide
 
-The 12 subject illustrations were created with Codex's built-in image generation tool, then exported as optimized JPEG assets for fast page loading. The original full-resolution PNG generations remain in the local Codex generation history.
+The 16 subject illustrations were created with Codex's built-in image generation tool, then exported as optimized JPEG assets for fast page loading. The original full-resolution PNG generations remain in the local Codex generation history.
 
 ## Shared generation brief
 
@@ -22,5 +22,9 @@ Create a scientifically educational, technically plausible 16:9 illustration for
 | `pcb-design-3d.jpg` | A schematic becoming a routed printed circuit board and manufactured assembly. |
 | `electronics-3d.jpg` | A safe low-voltage circuit visualizing voltage, current and resistance. |
 | `embedded-systems-3d.jpg` | A microcontroller reading inputs, executing firmware and controlling outputs. |
+| `drones-3d.jpg` | A quadcopter cutaway connecting force balance, onboard sensors, attitude correction and a waypoint mission. |
+| `ground-robots-3d.jpg` | A differential-drive rover turning lidar, camera and encoder readings into a map, path and terrain-safe motion. |
+| `sensors-3d.jpg` | Light, temperature, distance and position sensors flowing through conditioning, sampling, calibration and clean data. |
+| `robodk-3d.jpg` | A six-axis industrial robot station showing frames, targets, collision-free motion and its simulated digital twin. |
 
 The production-ready assets are stored in `public/images/learning/`. Page-specific alt text is maintained in `src/data/learning.ts` so the illustrations remain understandable to screen-reader users.

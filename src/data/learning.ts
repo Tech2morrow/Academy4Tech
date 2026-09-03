@@ -766,6 +766,250 @@ export const learningGuides: LearningGuide[] = [
       { title: 'CMSIS-Core overview', publisher: 'Arm', url: 'https://arm-software.github.io/CMSIS_6/latest/Core/index.html' },
       { title: 'Arduino microcontroller learning resources', publisher: 'Arduino', url: 'https://docs.arduino.cc/learn/' }
     ]
+  },
+  {
+    slug: 'drones',
+    hero: '/images/learning/drones-3d.jpg',
+    heroAlt: 'Three-dimensional educational quadcopter showing rotors, flight controller, sensors, camera and a safe waypoint mission',
+    bigIdea: 'A drone stays in the air by controlling forces many times each second, then combines sensing, estimation and planning to fly a safe mission.',
+    studentNote: 'Begin with diagrams and simulation. Real flight needs trained supervision, a safe location and the rules for the country where you fly.',
+    outcomes: ['Explain lift, weight, thrust and drag during hover and motion', 'Trace the flight-control feedback loop from sensors to rotor speed', 'Plan a waypoint mission with boundaries and recovery actions', 'Create a safe test plan using simulation, checklists and flight logs'],
+    lessons: [
+      {
+        title: 'Forces, rotors and attitude', duration: '20 min', question: 'How can four rotors lift and steer one aircraft?',
+        explanation: 'Each rotor accelerates air downward and produces an upward thrust force. In a steady hover, total upward thrust balances the drone’s weight. Increasing all rotors makes the drone climb. Changing rotor speeds by different amounts rolls, pitches or yaws the aircraft. To move forward, the drone tilts so part of its thrust points forward while enough still points upward.',
+        analogy: 'Balance a tray on your hands: raise both hands to lift it, or raise one side more to tilt it toward a direction.',
+        example: 'A quadcopter pitches forward by changing rotor thrust so the whole frame tilts. The angled thrust now has a forward part, so the drone accelerates ahead.',
+        visual: ['Rotor thrust', 'Force balance', 'Frame tilts', 'Motion changes'],
+        activity: ['Draw a side view of a hovering drone.', 'Add equal upward thrust and downward weight arrows.', 'Tilt the thrust arrow and split it into upward and forward parts.'],
+        check: { question: 'What must be true for a drone to hover at constant height?', answer: 'Its total upward thrust must balance its weight, with no unbalanced vertical force.' }
+      },
+      {
+        title: 'The flight-control loop', duration: '25 min', question: 'How does a drone notice and correct a tilt?',
+        explanation: 'The flight controller reads gyroscopes and accelerometers in an inertial measurement unit, then may combine barometer, compass and GNSS data. An estimator turns noisy measurements into a best estimate of attitude, height and position. The controller compares that estimate with the requested state and adjusts motor commands to reduce the error.',
+        analogy: 'Carrying a full cup, your inner ear and eyes notice a tilt and your hands make many tiny corrections before water spills.',
+        example: 'A gust creates a 6° roll error. The controller briefly increases thrust on the low side and reduces it on the high side until the measured roll returns near the target.',
+        visual: ['Sensors measure', 'Estimator combines', 'Controller compares', 'Motors correct'],
+        activity: ['List which sensor could help estimate rotation, height and outdoor position.', 'Invent one bad reading for each.', 'Explain why comparing several sensors can reveal a problem.'],
+        check: { question: 'Why does the controller use an estimated attitude instead of one raw sensor value?', answer: 'Raw measurements contain noise and limitations; an estimator combines evidence over time to produce a more useful state estimate.' }
+      },
+      {
+        title: 'Modes, waypoints and boundaries', duration: '25 min', question: 'How does a drone turn a goal into a route?',
+        explanation: 'A flight mode decides which quantities the pilot or autopilot controls. An autonomous mission can connect waypoints with heights, speeds and actions. The navigator turns the next waypoint into position targets, while lower control loops stabilize the aircraft. A geofence, home point and return or land action limit what happens when the plan cannot continue.',
+        analogy: 'A map gives the next destination, a driver follows the road, and guardrails keep the vehicle inside a safer region.',
+        example: 'A survey mission climbs to a safe height, visits four points around a field, returns above the launch area and lands only after the landing zone is clear.',
+        visual: ['Mission goal', 'Waypoint target', 'Stable flight', 'Return or land'],
+        activity: ['Sketch a four-waypoint survey route.', 'Add a home point and no-go boundary.', 'Write responses for low battery, lost control link and poor position data.'],
+        check: { question: 'Does GNSS position automatically prevent a drone from hitting a tree?', answer: 'No. GNSS estimates position; obstacle detection and avoidance need suitable sensors, software and a safe operating plan.' }
+      },
+      {
+        title: 'Test safely and learn from logs', duration: '30 min', question: 'How do engineers reduce risk before a real flight?',
+        explanation: 'Testing should move from a diagram to software-in-the-loop simulation, restrained bench checks with propellers removed, and only then supervised flight in a legal open area. A pre-flight checklist confirms structure, battery, sensors, home position, weather, people and failsafes. Logs turn a surprising event into evidence that can be inspected.',
+        analogy: 'A theatre rehearses individual scenes, then a full run, before performing in front of an audience.',
+        example: 'Before take-off, verify control direction and return settings in simulation, inspect every propeller, check the battery, confirm the flight area and name the person who can stop the test.',
+        visual: ['Simulate', 'Bench check', 'Controlled flight', 'Inspect log'],
+        activity: ['Create a ten-item pre-flight checklist.', 'Design one simulated link-loss test and its expected result.', 'Choose three log values that would explain an unstable hover.'],
+        check: { question: 'Why remove propellers during most bench tests?', answer: 'An unexpected motor command cannot turn the propellers into fast-moving blades that injure people or damage equipment.' }
+      }
+    ],
+    vocabulary: [
+      { term: 'Thrust', meaning: 'Force produced by accelerating air, used by the rotors to support and move the drone.' },
+      { term: 'Attitude', meaning: 'The aircraft orientation described by roll, pitch and yaw.' },
+      { term: 'IMU', meaning: 'An inertial measurement unit containing motion sensors such as gyroscopes and accelerometers.' },
+      { term: 'Estimator', meaning: 'Software that combines measurements to calculate the most likely vehicle state.' },
+      { term: 'Waypoint', meaning: 'A planned position, often with height and action information, in a mission.' },
+      { term: 'Failsafe', meaning: 'A configured response intended to reduce risk when a fault or limit is detected.' }
+    ],
+    challenge: { title: 'Plan a safe aerial survey', brief: 'Design a simulated quadcopter mission that photographs four points while staying inside a clear operating area and responding safely to faults.', steps: ['Draw the aircraft system and force diagram.', 'Map home, waypoints, heights and a no-go boundary.', 'Define responses for low battery, link loss and unreliable position.', 'Create simulation tests and a pre-flight checklist.'], evidence: ['Labelled aircraft and control-loop diagram', 'Mission map with boundary and home point', 'Failsafe decision table', 'Test results or predicted flight log'] },
+    safety: ['Learn and test in simulation before operating hardware.', 'Remove propellers and disconnect power before bench wiring or configuration.', 'Use trained adult supervision, keep people clear and inspect lithium batteries for damage.', 'Follow the current aviation rules and airspace requirements where the flight takes place; the FAA link is a United States example.'],
+    sources: [
+      { title: 'Recreational Flyers and Community-Based Organizations', publisher: 'U.S. Federal Aviation Administration', url: 'https://www.faa.gov/uas/recreational_flyers' },
+      { title: 'Flight controller hardware and setup', publisher: 'PX4', url: 'https://docs.px4.io/main/en/flight_controller/' },
+      { title: 'Copter flight modes and failsafes', publisher: 'ArduPilot', url: 'https://ardupilot.org/copter/docs/flight-modes.html' }
+    ]
+  },
+  {
+    slug: 'ground-robots',
+    hero: '/images/learning/ground-robots-3d.jpg',
+    heroAlt: 'Three-dimensional educational ground rover using wheel encoders, lidar and a camera to map and avoid an obstacle',
+    bigIdea: 'A ground robot reaches a goal by turning wheel motion and sensor readings into an estimated position, a safe path and continuous steering corrections.',
+    studentNote: 'A route that works on a clean floor may fail on dust, grass or a ramp. Mobile robotics is the science of measuring and managing that uncertainty.',
+    outcomes: ['Compare differential and steering-based mobile robot motion', 'Explain why wheel odometry drifts and how localization corrects it', 'Trace a navigation loop through mapping, planning and control', 'Design terrain and recovery tests with measurable results'],
+    lessons: [
+      {
+        title: 'Chassis, traction and steering', duration: '20 min', question: 'How do wheel speeds decide where a robot goes?',
+        explanation: 'A differential-drive robot controls a left and right driven wheel independently. Equal speeds produce a straight path, different speeds produce a curve, and opposite speeds can rotate the chassis near its centre. Wheel diameter, track width, mass distribution, tyre grip and caster placement all affect the real motion.',
+        analogy: 'A person paddling a canoe turns by changing the effort on the two sides.',
+        example: 'If the right wheel travels farther than the left wheel during the same time, the rover curves left. On loose sand, slip makes the real curve different from the calculation.',
+        visual: ['Wheel commands', 'Tyre forces', 'Chassis motion', 'Terrain response'],
+        activity: ['Use two coins as left and right wheels.', 'Move them equal distances, then move one farther.', 'Sketch the expected path and one reason the real path could differ.'],
+        check: { question: 'What happens when ideal differential-drive wheels rotate at equal speed in opposite directions?', answer: 'The robot rotates approximately in place around a point between the wheels.' }
+      },
+      {
+        title: 'Odometry and localization', duration: '25 min', question: 'How does a rover know where it is?',
+        explanation: 'Wheel encoders estimate how far each wheel turns. Odometry adds those small motions to update position and heading, but every slip or size error accumulates. Localization compares odometry with other evidence such as an IMU, lidar map, camera landmarks or GNSS. The result is a pose estimate with uncertainty, not perfect truth.',
+        analogy: 'Walking with your eyes closed, you can count steps, but small errors grow until a landmark helps you correct your position.',
+        example: 'A wheel encoder predicts the rover moved 2 m, while a lidar scan best matches the map at 1.86 m. The localization system combines evidence rather than blindly trusting one source.',
+        visual: ['Encoder motion', 'Odometry update', 'Landmark comparison', 'Corrected pose'],
+        activity: ['Mark a start pose on squared paper.', 'Apply three forward and turn commands.', 'Add a small error to each move and compare final predicted and true positions.'],
+        check: { question: 'Why does wheel odometry usually drift over a long route?', answer: 'Small errors from slip, wheel size and measurement accumulate each time motion is added.' }
+      },
+      {
+        title: 'Map, plan and control', duration: '25 min', question: 'How does a robot choose and follow a safe path?',
+        explanation: 'Sensors update an environmental representation such as an occupancy grid or costmap. A planner searches for a path from the estimated pose to the goal. A controller converts a nearby part of that path into velocity commands while reacting to local obstacles. Navigation software coordinates planning, control and recovery as a repeating loop.',
+        analogy: 'A route planner suggests streets, while the driver still steers around a temporary cone and checks where the car actually is.',
+        example: 'A global path goes around a shelf. When a box appears, the local controller slows and steers around it, or stops and requests a new plan if no safe gap remains.',
+        visual: ['Sense obstacles', 'Update costmap', 'Plan path', 'Control wheels'],
+        activity: ['Shade blocked cells on a paper grid.', 'Draw a short safe path with clearance.', 'Add a new obstacle and decide whether to steer locally, replan or stop.'],
+        check: { question: 'What is the difference between a planner and a controller?', answer: 'The planner chooses a route toward the goal; the controller produces immediate motion commands to follow it safely.' }
+      },
+      {
+        title: 'Terrain, recovery and evidence', duration: '30 min', question: 'What makes a rover reliable outside a perfect laboratory?',
+        explanation: 'Real terrain changes traction, clearance, vibration and sensor visibility. Engineers define operating limits, test surfaces and slopes one at a time, then record pose error, completion time, current and recovery events. Recovery behaviour might stop, reverse, rotate for a better view, replan or ask a human for help.',
+        analogy: 'Hiking shoes, route choice and pace all change when a smooth pavement becomes a rocky hill.',
+        example: 'A delivery rover must cross tile and carpet, climb a 7° ramp and stop 25 cm before an unexpected obstacle in at least 9 of 10 trials.',
+        visual: ['Define terrain', 'Run trial', 'Detect failure', 'Recover and measure'],
+        activity: ['Choose three test surfaces and one slope.', 'Write a pass condition for obstacle stopping and route completion.', 'Create a recovery decision for wheel slip and a blocked path.'],
+        check: { question: 'Why should terrain tests change one condition at a time?', answer: 'It makes the cause of a success or failure easier to identify and compare.' }
+      }
+    ],
+    vocabulary: [
+      { term: 'Differential drive', meaning: 'Steering produced by controlling left and right wheel speeds independently.' },
+      { term: 'Encoder', meaning: 'A sensor that measures rotation or incremental movement.' },
+      { term: 'Odometry', meaning: 'An estimate of motion calculated from movement measurements over time.' },
+      { term: 'Pose', meaning: 'A robot’s estimated position and orientation.' },
+      { term: 'Costmap', meaning: 'A grid representation that assigns travel cost to free, risky and occupied space.' },
+      { term: 'Recovery', meaning: 'A behaviour used when normal navigation cannot continue.' }
+    ],
+    challenge: { title: 'Design a campus delivery rover', brief: 'Plan a small autonomous ground vehicle that carries a light package through a mapped route with one ramp and changing obstacles.', steps: ['Choose the chassis, sensors, controller and power system.', 'Draw the localization and navigation data flow.', 'Map a route with clearance, a ramp and a blocked-path alternative.', 'Define terrain, obstacle and recovery tests.'], evidence: ['Labelled rover system diagram', 'Map and navigation flow', 'Pose-error and terrain test table', 'Recovery state diagram'] },
+    safety: ['Test at low speed in a bounded area with a reachable emergency stop.', 'Keep hands, hair and loose clothing away from wheels and drive parts.', 'Use a suitable motor driver, fuse or current limit and secured battery.', 'Do not test autonomous vehicles near roads, stairs or members of the public.'],
+    sources: [
+      { title: 'Navigation concepts', publisher: 'Open Navigation / Nav2', url: 'https://docs.nav2.org/jazzy/getting_started/navigation_concepts/' },
+      { title: 'ROS navigation messages', publisher: 'Open Robotics', url: 'https://docs.ros.org/en/jazzy/p/nav_msgs/README.html' },
+      { title: 'Gazebo getting started', publisher: 'Open Robotics', url: 'https://gazebosim.org/docs/latest/getstarted/' }
+    ]
+  },
+  {
+    slug: 'sensors',
+    hero: '/images/learning/sensors-3d.jpg',
+    heroAlt: 'Three-dimensional educational sensor chain converting light, temperature, distance and position into calibrated digital data',
+    bigIdea: 'A sensor does not simply produce truth: it converts a physical quantity into a signal that must be sampled, calibrated and checked.',
+    studentNote: 'Always record the unit, conditions and uncertainty. A number without context is not yet a trustworthy measurement.',
+    outcomes: ['Trace a physical quantity through a transducer to a digital reading', 'Distinguish range, resolution, accuracy, precision and sampling rate', 'Apply simple calibration and noise-reduction methods', 'Design a fair sensor comparison with recorded evidence'],
+    lessons: [
+      {
+        title: 'From physical change to signal', duration: '20 min', question: 'How does a sensor turn the world into data?',
+        explanation: 'A sensor contains a transducer whose electrical property changes with a physical quantity such as light, force, temperature or distance. Signal conditioning may amplify, limit or filter the result. The controller then reads a voltage, pulse timing or digital message and converts it into a value with a unit.',
+        analogy: 'A translator changes a message into a language the listener understands; the meaning should survive the conversion.',
+        example: 'An ultrasonic range sensor sends a sound pulse, measures echo time and uses the speed of sound to estimate distance in centimetres.',
+        visual: ['Physical quantity', 'Transducer signal', 'Conditioning', 'Value with unit'],
+        activity: ['Choose light, temperature and distance sensors.', 'Name the input quantity and electrical output for each.', 'Draw one complete measurement chain.'],
+        check: { question: 'Why must a measurement include a unit?', answer: 'The unit tells what scale the number uses; 25 could mean degrees Celsius, centimetres or something else.' }
+      },
+      {
+        title: 'Range, resolution and sampling', duration: '25 min', question: 'How much detail can a measurement contain?',
+        explanation: 'Range is the interval a sensor can measure. Resolution is the smallest change the measurement system can represent. An analog-to-digital converter divides its input range into codes: a 10-bit converter has 1,024 possible codes. Sampling rate says how often readings are taken; sampling too slowly can hide fast changes.',
+        analogy: 'A ruler’s length is its range, its smallest marking is its resolution, and how often you look at it is the sampling rate.',
+        example: 'An ideal 10-bit converter across 0–5 V has steps of about 5 ÷ 1,024 = 0.0049 V, but noise and sensor quality can make the useful detail worse.',
+        visual: ['Input range', 'Sample in time', 'Quantize to code', 'Store reading'],
+        activity: ['Draw a smooth changing signal.', 'Mark ten evenly timed samples.', 'Round each height to four levels and notice what detail disappears.'],
+        check: { question: 'Does finer ADC resolution guarantee an accurate sensor?', answer: 'No. Resolution describes representable steps; accuracy also depends on calibration, reference quality, noise and the sensor itself.' }
+      },
+      {
+        title: 'Accuracy, calibration and noise', duration: '25 min', question: 'How can repeated readings become more trustworthy?',
+        explanation: 'Accuracy describes closeness to an accepted reference, while precision describes how closely repeated readings agree. Calibration compares readings with known references and creates a correction. Noise causes short-term variation; shielding, grounding, filtering and averaging can help, but heavy smoothing also delays real change.',
+        analogy: 'Arrows clustered away from the bullseye are precise but inaccurate; scattered arrows around the bullseye may average accurately but lack precision.',
+        example: 'A temperature sensor reads 1.8 °C high at two reference points, so subtracting the measured offset improves results within the tested range.',
+        visual: ['Reference value', 'Repeated readings', 'Find error', 'Apply correction'],
+        activity: ['Take ten readings of one unchanging object or use sample data.', 'Calculate the average and spread.', 'Apply a known offset, then state what the calibration does not prove.'],
+        check: { question: 'Can averaging remove a fixed calibration offset?', answer: 'No. Averaging can reduce random variation, but a consistent bias needs calibration or another correction.' }
+      },
+      {
+        title: 'Validate a sensing system', duration: '30 min', question: 'How do engineers know a sensor is suitable for a job?',
+        explanation: 'A sensor should be tested across the required range and real conditions, not only at one convenient point. Validation checks response time, repeatability, limits, missing data and unreasonable values. Combining different sensors can improve confidence, but only when their units, timestamps, locations and failure modes are understood.',
+        analogy: 'A weather report is stronger when a thermometer, rain gauge and observation agree, but repeating the same faulty reading does not create truth.',
+        example: 'Compare a distance sensor at 10, 30, 60 and 100 cm on dark, bright and angled targets, then graph error and mark where readings fail.',
+        visual: ['Define requirement', 'Test conditions', 'Compare reference', 'Accept or improve'],
+        activity: ['Write a requirement for a classroom temperature or distance sensor.', 'Create a table of reference values and conditions.', 'Add tests for disconnected, out-of-range and rapidly changing input.'],
+        check: { question: 'Why test at several points across the range?', answer: 'A sensor’s error may change with input, so one good reading cannot prove performance everywhere.' }
+      }
+    ],
+    vocabulary: [
+      { term: 'Transducer', meaning: 'A device that converts one form of physical quantity or energy into another signal.' },
+      { term: 'Range', meaning: 'The interval between the minimum and maximum measurable values.' },
+      { term: 'Resolution', meaning: 'The smallest change a measurement system can represent.' },
+      { term: 'Accuracy', meaning: 'Closeness of a result to an accepted reference value.' },
+      { term: 'Precision', meaning: 'Closeness of repeated results to one another.' },
+      { term: 'Calibration', meaning: 'Comparison with known references to estimate and correct measurement error.' }
+    ],
+    challenge: { title: 'Build a sensor validation lab', brief: 'Plan and, if hardware is available, run a fair comparison of a sensor against known reference values and real operating conditions.', steps: ['Define the quantity, range, unit and required accuracy.', 'Choose reference points and repeat each measurement.', 'Graph error and identify noise, bias and failure regions.', 'Recommend calibration, filtering or a different sensor.'], evidence: ['Measurement-chain diagram', 'Timestamped data table with units', 'Reference-versus-reading graph', 'Evidence-based sensor recommendation'] },
+    safety: ['Use low-voltage educational sensors and verify supply and signal limits.', 'Disconnect power before changing wiring.', 'Do not use student projects to measure safety-critical, medical or mains-electric quantities.', 'Treat unexpected values as possible faults before using them to control an actuator.'],
+    sources: [
+      { title: 'Arduino built-in examples: analog input, calibration and smoothing', publisher: 'Arduino', url: 'https://docs.arduino.cc/built-in-examples/' },
+      { title: 'Arduino analog I/O language reference', publisher: 'Arduino', url: 'https://docs.arduino.cc/language-reference/' },
+      { title: 'SI units information', publisher: 'National Institute of Standards and Technology', url: 'https://www.nist.gov/pml/owm/metric-si/si-units' }
+    ]
+  },
+  {
+    slug: 'robodk',
+    hero: '/images/learning/robodk-3d.jpg',
+    heroAlt: 'Three-dimensional RoboDK learning scene with an industrial robot, reference frames, target poses and collision-free simulated paths',
+    bigIdea: 'RoboDK creates a digital robot station where frames, tools, targets and motion can be tested before controller-specific code is generated.',
+    studentNote: 'A simulation is a powerful engineering model, not a safety guarantee. The virtual station must match the real cell and real validation still matters.',
+    outcomes: ['Organize a RoboDK station using robots, objects, tools and reference frames', 'Explain joint and Cartesian targets plus joint and linear motion', 'Check reach, singularity risk, collisions and cycle sequence in simulation', 'Describe the offline-programming path from station to verified robot program'],
+    lessons: [
+      {
+        title: 'Build a station with frames', duration: '20 min', question: 'How does the simulator know where every item belongs?',
+        explanation: 'A RoboDK station stores robots, objects, tools, reference frames, targets and programs. A reference frame describes position and orientation relative to a parent frame. The tool centre point describes the working point of the gripper or process tool. A clear frame hierarchy lets a whole fixture and its targets move together when its measured location changes.',
+        analogy: 'A street address locates a building in a city, while a room number locates an object inside that building.',
+        example: 'Attach a part and its pick targets to a table frame. If the table frame moves 50 mm, the part and targets keep their correct relationship to the table.',
+        visual: ['Robot base', 'Table frame', 'Object frame', 'Tool centre point'],
+        activity: ['Sketch a station tree for a robot, table, part and gripper.', 'Draw local axes for the robot base and table.', 'Predict which items move when the table frame changes.'],
+        check: { question: 'Why attach targets to a work reference frame?', answer: 'The targets keep their relationship to the workpiece and can be updated together when that frame is remeasured or moved.' }
+      },
+      {
+        title: 'Targets and motion types', duration: '25 min', question: 'What exactly does a robot target remember?',
+        explanation: 'A Cartesian target records the tool pose relative to a reference frame; a joint target records robot joint values. A joint move usually chooses an efficient coordinated path in joint space, while a linear move keeps the tool centre point on a straight line in Cartesian space. The right choice depends on approach, process and clearance needs.',
+        analogy: 'Your hand can move directly across a table, or your shoulder and elbow can take a comfortable route that makes the hand follow a curve.',
+        example: 'Use a joint move from home to an approach target, then a slower linear move down to a pick target so the gripper approaches the part predictably.',
+        visual: ['Choose frame and tool', 'Teach target', 'Select motion', 'Simulate path'],
+        activity: ['Place home, approach, pick and retreat points on a workcell sketch.', 'Choose joint or linear motion for each connection.', 'Explain where speed should be reduced.'],
+        check: { question: 'When is a linear move especially useful?', answer: 'When the tool must follow a predictable straight path, such as approaching a part or following a process line.' }
+      },
+      {
+        title: 'Reach, collisions and calibration', duration: '25 min', question: 'Why can a visually correct target still fail?',
+        explanation: 'A target may be outside reach, near a joint limit, in a singular configuration or reachable only through an obstacle. Collision checks need relevant station geometry, and accurate offline programming needs calibrated tool and reference frames. Simulate the complete sequence, inspect robot configurations and allow real clearance instead of accepting a single successful pose.',
+        analogy: 'You may touch a shelf point while standing still, yet your elbow can hit a wall during the movement toward it.',
+        example: 'The gripper reaches a box, but the elbow clips the fixture on the approach. Moving the approach target and choosing another robot configuration creates a clear path.',
+        visual: ['Check reach', 'Inspect configuration', 'Test collisions', 'Add clearance'],
+        activity: ['Mark possible collision pairs in a sample cell.', 'Draw a safer approach and retreat path.', 'List tool and frame measurements that must match the real setup.'],
+        check: { question: 'Does a collision-free target prove the whole movement is collision-free?', answer: 'No. Every path segment and relevant moving geometry must be checked throughout the motion.' }
+      },
+      {
+        title: 'Offline program to real validation', duration: '30 min', question: 'How does a simulation become controller-ready code?',
+        explanation: 'Offline programming builds and tests a robot sequence away from production. RoboDK uses a post processor to translate generic simulated instructions into the selected controller’s program format. Before production, engineers review generated code, confirm frames and tools, transfer through an approved method, then validate at reduced speed under the robot maker’s safety procedure.',
+        analogy: 'A translator can convert a carefully written route into another language, but a qualified driver still checks the real road before carrying passengers.',
+        example: 'Simulate a pick-and-place cycle, check targets and collisions, select the correct robot post processor, generate the program, then perform supervised low-speed validation in the real cell.',
+        visual: ['Validate station', 'Choose post processor', 'Generate program', 'Reduced-speed proof'],
+        activity: ['Write a pick-and-place program sequence.', 'Create a pre-export checklist for robot, tool, frames and post processor.', 'Add a reduced-speed real-cell validation plan with stop conditions.'],
+        check: { question: 'What does a post processor do?', answer: 'It converts the generic offline program into syntax and structure for a specific robot controller.' }
+      }
+    ],
+    vocabulary: [
+      { term: 'Station', meaning: 'A RoboDK project containing the robot, geometry, frames, targets and programs.' },
+      { term: 'Reference frame', meaning: 'A coordinate system that locates an item relative to another item.' },
+      { term: 'TCP', meaning: 'The tool centre point used as the working position and orientation of a robot tool.' },
+      { term: 'Target', meaning: 'A stored robot pose or set of joint values.' },
+      { term: 'Singularity', meaning: 'A robot configuration where some motions become poorly conditioned or require extreme joint speed.' },
+      { term: 'Post processor', meaning: 'Software that generates controller-specific robot code from offline instructions.' }
+    ],
+    challenge: { title: 'Simulate a pick-and-place cell', brief: 'Design a RoboDK station that moves three parts from an input fixture to safe output locations with clear approaches and controller-ready logic.', steps: ['Create the station hierarchy, frames and tool centre point.', 'Teach home, approach, pick, retreat and place targets.', 'Choose motion types and inspect reach, configurations and collisions.', 'Prepare generation and reduced-speed validation checklists.'], evidence: ['Station tree and frame diagram', 'Target and motion sequence', 'Collision and reach review', 'Offline-programming validation checklist'] },
+    safety: ['Treat the simulation as a model, never as proof that a real cell is safe.', 'Only trained and authorized people should operate or validate an industrial robot.', 'Use guarding, approved stop systems and reduced-speed procedures required by the robot manufacturer and site.', 'Confirm the active tool, frames, payload and program before any real motion.'],
+    sources: [
+      { title: 'RoboDK getting started', publisher: 'RoboDK', url: 'https://robodk.com/doc/en/Getting-Started.html' },
+      { title: 'Reference frames', publisher: 'RoboDK', url: 'https://robodk.com/doc/en/Basic-Guide-Reference-Frames.html' },
+      { title: 'Create robot targets', publisher: 'RoboDK', url: 'https://robodk.com/doc/en/Getting-Started-Create-Targets.html' }
+    ]
   }
 ];
 
