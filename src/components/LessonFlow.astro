@@ -1,0 +1,22 @@
+---
+interface Props {
+  steps: string[];
+  label: string;
+}
+
+const { steps, label } = Astro.props;
+---
+<div class="lesson-flow" role="img" aria-label={label}>
+  <span class="sr-only">{steps.join(' then ')}</span>
+  <div class="lesson-flow-track" aria-hidden="true">
+    {steps.map((step, index) => (
+      <>
+        <span class="lesson-flow-node">
+          <i>{String(index + 1).padStart(2, '0')}</i>
+          <strong>{step}</strong>
+        </span>
+        {index < steps.length - 1 && <span class="lesson-flow-arrow">→</span>}
+      </>
+    ))}
+  </div>
+</div>

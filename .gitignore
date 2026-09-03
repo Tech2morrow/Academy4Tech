@@ -2,6 +2,7 @@ node_modules/
 .pnpm-store/
 dist/
 .astro/
+.wrangler/
 .DS_Store
 .env
 .env.*

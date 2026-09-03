@@ -38,7 +38,7 @@ src/content/tutorials/
 
 Copy a nearby file's frontmatter, update all factual fields, write the content, then run `pnpm build`. Set `draft: true` to exclude an entry from production. A future `publishedDate` also keeps an entry out of the generated site until that date is reached at build time.
 
-Learning-topic taxonomy is maintained in `src/data/site.ts`.
+Learning-topic taxonomy is maintained in `src/data/site.ts`. The expanded visual course material, session activities, vocabulary, challenges and official references are maintained in `src/data/learning.ts`; its generated course artwork lives in `public/images/learning/`.
 
 The Android showcase is maintained in `src/data/apps.ts`. Add or update one app record there, place its icon and feature artwork in `public/images/apps/`, and run `pnpm build`. The homepage and `/apps` page both read from this single list.
 
