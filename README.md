@@ -70,7 +70,7 @@ docs/                   audit, architecture and migration records
 7. Add `www.academy4tech.com` as well and create a Cloudflare Redirect Rule that permanently redirects `www` to `https://academy4tech.com`, preserving path and query.
 8. Keep SSL/TLS mode at **Full (strict)**, enable **Always Use HTTPS**, Brotli and HTTP/3.
 
-The website itself is static, while `functions/api/course-interest.js` handles course-interest submissions on Cloudflare Pages. Before making the form public, create a D1 database, apply `migrations/0001_course_interest.sql`, and bind it to the Pages project as `STUDENT_INTEREST_DB`. See [course-interest form deployment](docs/COURSE-INTEREST-FORM.md) for the exact setup and test checklist.
+The website itself is static, while `functions/api/course-interest.js` handles course-interest submissions on Cloudflare Pages. The production D1 binding is versioned in `wrangler.toml` as `STUDENT_INTEREST_DB`; apply `migrations/0001_course_interest.sql` when initializing a new database. See [course-interest form deployment](docs/COURSE-INTEREST-FORM.md) for the exact setup and test checklist.
 
 `public/_headers` supplies browser security headers. `public/_redirects` preserves legacy paths. Review the Content Security Policy before adding analytics, forms, video embeds or another external service.
 

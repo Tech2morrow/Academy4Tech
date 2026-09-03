@@ -1,0 +1,9 @@
+# Academy4Tech Cloudflare Pages production configuration.
+name = "academy4tech"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-08-29"
+
+[[env.production.d1_databases]]
+database_id = "5aa2e110-c51c-4402-b441-d0ee16685f1e"
+binding = "STUDENT_INTEREST_DB"
+database_name = "academy4tech-student-interest"

@@ -1,0 +1,31 @@
+---
+import Icon from '@/components/Icon.astro';
+import { SITE } from '@/data/site';
+
+interface Props {
+  compact?: boolean;
+  includeEmail?: boolean;
+}
+
+const { compact = false, includeEmail = true } = Astro.props;
+const channels = [
+  ...(includeEmail ? [
+    { label: SITE.email, detail: 'Academy4Tech email', href: `mailto:${SITE.email}`, icon: 'mail', external: false },
+    { label: SITE.alternateEmail, detail: 'Alternative email', href: `mailto:${SITE.alternateEmail}`, icon: 'mail', external: false }
+  ] : []),
+  { label: 'Muhammed Nabeel', detail: 'Personal LinkedIn', href: SITE.social.linkedinOwner, icon: 'network', external: true },
+  { label: 'Academy4Tech', detail: 'Company LinkedIn', href: SITE.social.linkedin, icon: 'network', external: true },
+  { label: 'Tech2morrow', detail: 'GitHub projects', href: SITE.social.github, icon: 'github', external: true },
+  { label: 'Academy4Tech', detail: 'YouTube channel', href: SITE.social.youtube, icon: 'play', external: true }
+];
+---
+<div class:list={['connect-links', compact && 'connect-links-compact']}>
+  {channels.map((channel) => (
+    <a href={channel.href} target={channel.external ? '_blank' : undefined} rel={channel.external ? 'noopener noreferrer' : undefined}>
+      <span class="connect-link-icon"><Icon name={channel.icon} size={compact ? 20 : 24} /></span>
+      <span class="connect-link-copy"><small>{channel.detail}</small><strong>{channel.label}</strong></span>
+      <Icon name={channel.external ? 'external' : 'arrow'} size={16} />
+      {channel.external && <span class="sr-only"> (opens in a new tab)</span>}
+    </a>
+  ))}
+</div>

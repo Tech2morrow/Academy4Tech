@@ -4,7 +4,8 @@ export const SITE = {
   tagline: 'Learn. Build. Innovate.',
   description: 'Practical engineering education for robotics, IoT, Python, AI and embedded systems.',
   owner: 'Muhammed Nabeel',
-  phone: '+971 55 193 5789',
+  email: 'info@academy4tech.com',
+  alternateEmail: 'academy4tech@gmail.com',
   social: {
     github: 'https://github.com/Tech2morrow',
     youtube: 'https://www.youtube.com/channel/UC4RUM4bbg45ck1Jfxznji5w',

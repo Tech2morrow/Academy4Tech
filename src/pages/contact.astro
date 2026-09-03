@@ -1,7 +1,52 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';import Breadcrumbs from '@/components/Breadcrumbs.astro';import Icon from '@/components/Icon.astro';import {SITE} from '@/data/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import ConnectLinks from '@/components/ConnectLinks.astro';
+import Icon from '@/components/Icon.astro';
+import { SITE } from '@/data/site';
 ---
-<BaseLayout title="Contact" description="Contact Academy4Tech through its confirmed public channels.">
-  <section class="page-hero"><div class="shell"><Breadcrumbs items={[{label:'Home',href:'/'},{label:'Contact'}]}/><div class="eyebrow">Get in touch</div><h1>Talk engineering.</h1><p>Use one of the confirmed public channels below. No contact form or unverified email address has been added.</p></div></section>
-  <section class="section"><div class="shell"><div class="content-grid"><article class="content-card"><div class="card-visual"><span>Professional profile</span><Icon name="network" size={44}/></div><div class="card-body"><h3>LinkedIn</h3><p>Connect with Muhammed Nabeel through the profile linked on the original Academy4Tech site.</p><a class="text-link" href={SITE.social.linkedinOwner} target="_blank" rel="noopener noreferrer">Open LinkedIn <Icon name="external" size={17}/></a></div></article><article class="content-card"><div class="card-visual"><span>Project code</span><Icon name="github" size={44}/></div><div class="card-body"><h3>GitHub</h3><p>Explore source repositories and project files from the Tech2morrow account.</p><a class="text-link" href={SITE.social.github} target="_blank" rel="noopener noreferrer">Open GitHub <Icon name="external" size={17}/></a></div></article><article class="content-card"><div class="card-visual"><span>Phone</span><Icon name="wave" size={44}/></div><div class="card-body"><h3>{SITE.phone}</h3><p>This inquiry number is preserved from the public About page on the original website.</p><a class="text-link" href={`tel:${SITE.phone.replaceAll(' ','')}`}>Call Academy4Tech <Icon name="arrow" size={17}/></a></div></article></div></div></section>
+<BaseLayout title="Connect" description="Connect with Academy4Tech by email, LinkedIn, GitHub or YouTube.">
+  <section class="page-hero connect-hero">
+    <div class="shell">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Connect' }]} />
+      <div class="page-hero-grid">
+        <div>
+          <div class="eyebrow">Let’s connect</div>
+          <h1>Build, learn and share ideas.</h1>
+          <p>Questions about the learning resources, Android apps or engineering projects are welcome. Choose the channel that works best for you.</p>
+          <div class="hero-actions">
+            <a class="button" href={`mailto:${SITE.email}`}><Icon name="mail" size={19} /> Email Academy4Tech</a>
+            <a class="button button-secondary" href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer"><Icon name="network" size={19} /> Follow on LinkedIn</a>
+          </div>
+        </div>
+        <div class="connect-orbit" aria-hidden="true">
+          <span class="connect-orbit-core"><Icon name="network" size={42} /></span>
+          <span class="connect-orbit-node connect-orbit-node-one"><Icon name="mail" size={22} /></span>
+          <span class="connect-orbit-node connect-orbit-node-two"><Icon name="github" size={22} /></span>
+          <span class="connect-orbit-node connect-orbit-node-three"><Icon name="play" size={22} /></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell connect-layout">
+      <article class="connect-email-card">
+        <span class="connect-email-icon"><Icon name="mail" size={32} /></span>
+        <div class="eyebrow">Direct email</div>
+        <h2>Start a conversation.</h2>
+        <p>For learning questions, collaborations and project enquiries, write to the Academy4Tech inbox.</p>
+        <a class="connect-email-primary" href={`mailto:${SITE.email}`}>{SITE.email}<Icon name="arrow" size={18} /></a>
+        <div class="connect-email-alternate"><span>Alternative email</span><a href={`mailto:${SITE.alternateEmail}`}>{SITE.alternateEmail}</a></div>
+      </article>
+
+      <div class="connect-channel-panel">
+        <div class="section-head">
+          <div><div class="eyebrow">Public channels</div><h2>Find Academy4Tech online.</h2></div>
+          <p>Explore project code, follow new work and connect professionally through these verified profiles.</p>
+        </div>
+        <ConnectLinks includeEmail={false} />
+      </div>
+    </div>
+  </section>
 </BaseLayout>

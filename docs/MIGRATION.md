@@ -25,9 +25,6 @@ All rules below are implemented as Cloudflare Pages static redirects in `public/
 | `/conductivity-temperature-and-depthctd` | `/learn/sensors` | 301 |
 | `/parcel-tracking-global` | `/resources` | 301 |
 | `/website-builder` | `/about` | 301 |
-| `/app-privacy` | `/privacy` | 301 |
-| `/app-privacy/privacy-policy` | `/privacy` | 301 |
-| `/app-privacy/iot-stations-privacy-policy` | `/privacy/iot-stations` | 301 |
 
 The canonical origin is `https://academy4tech.com` (without `www`). Add a Cloudflare Redirect Rule for requests where the hostname equals `www.academy4tech.com`, preserving path and query, and redirect to the apex host with status 301.
 

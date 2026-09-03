@@ -103,8 +103,6 @@ The current site includes:
 ├── about
 ├── contact
 ├── search
-├── privacy/
-│   └── iot-stations
 ├── rss.xml
 └── 404
 ```
@@ -121,7 +119,6 @@ The site already provides:
 - Breadcrumbs, related content, social sharing and code-copy controls
 - A community page with verified public channels
 - A course-interest form
-- Privacy pages
 - Responsive navigation and footer
 - Canonical metadata, Open Graph metadata, structured data, sitemap, robots.txt and RSS
 - Legacy redirects and Cloudflare security headers
@@ -279,7 +276,7 @@ The page at `/courses/interest` gathers:
 - Preferred learning format
 - Optional project idea
 - Guardian/age confirmation
-- Privacy consent
+- Data-use consent
 
 The client progressively enhances a normal form POST. The Cloudflare Pages Function validates fields again, rejects cross-site submissions, limits payload size, uses a timing check and honeypot, enforces parent/guardian submission for learners under 16, and writes valid submissions to D1.
 
@@ -289,7 +286,7 @@ The required D1 binding is:
 
 The schema is in `migrations/0001_course_interest.sql`. The endpoint intentionally returns `503` when the binding is unavailable so submissions are never silently lost.
 
-Do not weaken server-side validation. Do not expose secrets or store exact birth dates, identification documents, payment information or IP addresses. If adding Turnstile, analytics, email automation or another processor, update the Content Security Policy, deployment documentation and privacy policy before enabling it.
+Do not weaken server-side validation. Do not expose secrets or store exact birth dates, identification documents, payment information or IP addresses. If adding Turnstile, analytics, email automation or another processor, update the Content Security Policy, deployment documentation and inline data-use notice before enabling it.
 
 ## Community page
 
@@ -399,7 +396,7 @@ Preserve or strengthen:
 - No secrets in source or client JavaScript
 - Data minimization and documented retention
 
-The public privacy wording must match the implementation. Course-interest records should be reviewed and deleted when no longer needed and within the stated retention period unless a continuing conversation or legal need applies.
+The public inline data-use wording must match the implementation. Course-interest records should be reviewed and deleted when no longer needed and within the stated retention period unless a continuing conversation or legal need applies.
 
 ## Deployment target
 
@@ -450,7 +447,7 @@ Before calling the work complete, confirm:
 - Under-16 guardian logic is enforced on the server
 - The endpoint fails clearly if D1 is not configured
 - No sensitive values or fabricated information were added
-- Sitemap, metadata, redirects and privacy copy match the final implementation
+- Sitemap, metadata, redirects and data-use copy match the final implementation
 - Documentation explains any new configuration
 
 ## Final delivery format
@@ -465,4 +462,3 @@ When finished, provide:
 6. Exact deployment steps if deployment was requested—but do not claim deployment occurred unless it actually succeeded
 
 The final result should be interesting to students, visually distinctive, technically credible, fast, accessible, maintainable and honest about what Academy4Tech currently offers.
-

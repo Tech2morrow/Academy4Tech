@@ -1,145 +1,194 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import ResponsiveImage from '@/components/ResponsiveImage.astro';
+import Icon from '@/components/Icon.astro';
+import { SITE, topics } from '@/data/site';
+
+const featuredInterests = topics.map((topic) => ({ value: topic.slug, label: topic.name }));
+---
+<BaseLayout title="Course Interest Form" description="Tell Academy4Tech which robotics, IoT, Python, AI or embedded engineering courses you want to learn." image="/images/ai/course-learning-path.webp">
+  <section class="page-hero course-interest-hero">
+    <div class="shell">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Courses' }, { label: 'Interest form' }]} />
+      <div class="page-hero-grid">
+        <div>
+          <div class="eyebrow">About two minutes</div>
+          <h1>What do you want to build next?</h1>
+          <p>Share your goals so Academy4Tech can understand demand for future learning material and contact you when something relevant is available.</p>
+          <div class="page-meta"><span>No payment</span><span>No account required</span><span>Confirmation reference</span></div>
+        </div>
+        <ResponsiveImage class="page-hero-photo" src="/images/ai/course-learning-path" alt="An engineering learner connecting code, microcontrollers, sensors and a robotic arm" width={1774} height={887} sizes="(max-width: 760px) 100vw, 44vw" eager />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell form-layout">
+      <aside class="form-intro">
+        <div class="eyebrow">Course interest</div>
+        <h2>Help shape useful learning experiences.</h2>
+        <p>This is an expression of interest, not an enrollment or promise of a course place. Your answers help identify the subjects, levels and formats learners need most.</p>
+        <div class="form-notes">
+          <div><strong>Saved with confirmation</strong><span>A success message includes a reference after the database confirms the record.</span></div>
+          <div><strong>For younger learners</strong><span>If the learner is under 16, a parent or guardian must submit the form.</span></div>
+          <div><strong>Data use</strong><span>Your details are used only to assess course demand and follow up about relevant learning opportunities.</span></div>
+        </div>
+        <p class="form-help-contact">Need help? Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      </aside>
+
+      <form class="interest-form" action="/api/course-interest" method="post" data-interest-form>
+        <div class="honeypot" hidden aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off" /></div>
+        <input type="hidden" name="startedAt" value="" data-started-at />
+        <input type="hidden" name="submissionId" value="" data-submission-id />
+
+        <fieldset>
+          <legend><span>01</span> About you</legend>
+          <div class="field-grid">
+            <label class="field"><span>Name <em>Required</em></span><input name="name" type="text" autocomplete="name" maxlength="100" required /></label>
+            <label class="field"><span>Email <em>Required</em></span><input name="email" type="email" autocomplete="email" inputmode="email" maxlength="160" required /></label>
+            <label class="field"><span>Your role <em>Required</em></span><select name="submitterRole" required><option value="">Choose one</option><option value="learner">Learner</option><option value="parent-guardian">Parent or guardian</option><option value="educator">Educator</option><option value="other">Other</option></select></label>
+            <label class="field"><span>Learner age group <em>Required</em></span><select name="ageGroup" required><option value="">Choose one</option><option value="under-16">Under 16</option><option value="16-18">16–18</option><option value="19-24">19–24</option><option value="25-plus">25+</option><option value="prefer-not">Prefer not to say</option></select></label>
+            <label class="field"><span>Country or region</span><input name="country" type="text" autocomplete="country-name" maxlength="80" /></label>
+            <label class="field"><span>Experience level <em>Required</em></span><select name="experienceLevel" required><option value="">Choose one</option><option value="new">New to engineering</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span>02</span> What interests you?</legend>
+          <p class="field-help">Select every topic you would genuinely like to study. At least one is required.</p>
+          <div class="checkbox-grid">
+            {featuredInterests.map((interest) => <label class="check-option"><input type="checkbox" name="interests" value={interest.value} /><span>{interest.label}</span></label>)}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span>03</span> Learning preference</legend>
+          <div class="field-grid">
+            <label class="field"><span>Preferred format <em>Required</em></span><select name="preferredFormat" required><option value="">Choose one</option><option value="online-live">Online live sessions</option><option value="self-paced">Self-paced lessons</option><option value="in-person-uae">In person in the UAE</option><option value="hybrid">Hybrid</option><option value="not-sure">Not sure yet</option></select></label>
+            <label class="field field-wide"><span>What would you like to build?</span><textarea name="message" rows="6" maxlength="1000" placeholder="For example: a rover that maps a room, an IoT weather station, or my first Python automation..."></textarea><small><span data-message-count>0</span>/1000 characters</small></label>
+          </div>
+        </fieldset>
+
+        <div class="data-use-note"><Icon name="mail" size={21} /><p><strong>How your answers are used</strong><span>Academy4Tech stores the information you submit to plan learning resources and contact you about relevant opportunities. No payment details, identification documents or exact date of birth are requested.</span></p></div>
+        <label class="consent-row"><input type="checkbox" name="guardianConsent" value="yes" required /><span>I confirm that I am 16 or older, or I am the parent or guardian submitting for a learner under 16. <em>Required</em></span></label>
+        <label class="consent-row"><input type="checkbox" name="dataUseConsent" value="yes" required /><span>I agree that Academy4Tech may store and use this information for course planning and relevant follow-up. <em>Required</em></span></label>
+        <p class="form-status" role="status" aria-live="polite" aria-atomic="true" data-form-status></p>
+        <button class="button form-submit" type="submit" data-submit-button>Send my interest <Icon name="arrow" size={18} /></button>
+        <noscript><p class="form-noscript">JavaScript is required for confirmed online submission. You can instead email your interests to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p></noscript>
+      </form>
+    </div>
+  </section>
 <script>
   const form = document.querySelector<HTMLFormElement>('[data-interest-form]');
-  const startedAtInput =
-    form?.querySelector<HTMLInputElement>('[data-started-at]');
-  const message =
-    form?.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
+  const startedAtInput = form?.querySelector<HTMLInputElement>('[data-started-at]');
+  const submissionIdInput = form?.querySelector<HTMLInputElement>('[data-submission-id]');
+  const message = form?.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
   const count = document.querySelector<HTMLElement>('[data-message-count]');
   const status = document.querySelector<HTMLElement>('[data-form-status]');
-  const button =
-    form?.querySelector<HTMLButtonElement>('[data-submit-button]');
+  const button = form?.querySelector<HTMLButtonElement>('[data-submit-button]');
 
   let formStartedAt = Date.now();
 
-  function resetStartedAt() {
-    formStartedAt = Date.now();
-
-    if (startedAtInput) {
-      startedAtInput.value = String(formStartedAt);
+  function createSubmissionId() {
+    const cryptoApi = window.crypto;
+    if (typeof cryptoApi?.randomUUID === 'function') return cryptoApi.randomUUID();
+    if (typeof cryptoApi?.getRandomValues === 'function') {
+      const bytes = cryptoApi.getRandomValues(new Uint8Array(16));
+      bytes[6] = (bytes[6] & 0x0f) | 0x40;
+      bytes[8] = (bytes[8] & 0x3f) | 0x80;
+      const hex = [...bytes].map((value) => value.toString(16).padStart(2, '0')).join('');
+      return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
     }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (token) => {
+      const value = Math.floor(Math.random() * 16);
+      return (token === 'x' ? value : (value & 0x3) | 0x8).toString(16);
+    });
   }
 
-  resetStartedAt();
+  function resetSubmissionSession() {
+    formStartedAt = Date.now();
+    form?.setAttribute('data-js-ready', 'initializing');
+    if (startedAtInput) {
+      startedAtInput.value = String(formStartedAt);
+      startedAtInput.setAttribute('value', String(formStartedAt));
+    }
+    if (submissionIdInput) {
+      const submissionId = createSubmissionId();
+      submissionIdInput.value = submissionId;
+      submissionIdInput.setAttribute('value', submissionId);
+    }
+    form?.setAttribute('data-js-ready', 'true');
+  }
+
+  function showStatus(text: string, state?: 'success' | 'error') {
+    if (!status) return;
+    status.textContent = text;
+    status.classList.toggle('is-success', state === 'success');
+    status.classList.toggle('is-error', state === 'error');
+  }
+
+  resetSubmissionSession();
 
   message?.addEventListener('input', () => {
-    if (count) {
-      count.textContent = String(message.value.length);
-    }
+    if (count) count.textContent = String(message.value.length);
   });
 
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
-
-    if (!form.reportValidity()) {
-      return;
-    }
+    if (!form.reportValidity()) return;
 
     const formData = new FormData(form);
-    const interestValues = formData
-      .getAll('interests')
-      .map(String);
+    const interestValues = formData.getAll('interests').map(String);
 
     if (!interestValues.length) {
-      if (status) {
-        status.textContent = 'Choose at least one learning interest.';
-        status.classList.remove('is-success');
-        status.classList.add('is-error');
-      }
-
-      form
-        .querySelector<HTMLInputElement>('input[name="interests"]')
-        ?.focus();
-
+      showStatus('Choose at least one learning interest.', 'error');
+      form.querySelector<HTMLInputElement>('input[name="interests"]')?.focus();
       return;
     }
 
-    if (
-      formData.get('ageGroup') === 'under-16' &&
-      formData.get('submitterRole') !== 'parent-guardian'
-    ) {
-      if (status) {
-        status.textContent =
-          'A parent or guardian must submit for a learner under 16.';
-        status.classList.remove('is-success');
-        status.classList.add('is-error');
-      }
-
-      form
-        .querySelector<HTMLSelectElement>('select[name="submitterRole"]')
-        ?.focus();
-
+    if (formData.get('ageGroup') === 'under-16' && formData.get('submitterRole') !== 'parent-guardian') {
+      showStatus('A parent or guardian must submit for a learner under 16.', 'error');
+      form.querySelector<HTMLSelectElement>('select[name="submitterRole"]')?.focus();
       return;
     }
 
-    const payload: Record<
-      string,
-      FormDataEntryValue | FormDataEntryValue[]
-    > = {
+    const payload: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {
       ...Object.fromEntries(formData.entries()),
       interests: interestValues,
-      startedAt: String(formStartedAt),
+      startedAt: String(formStartedAt)
     };
 
     if (button) {
       button.disabled = true;
-      button.textContent = 'Sending…';
+      button.textContent = 'Saving securely…';
     }
-
-    if (status) {
-      status.textContent = 'Sending your course interest…';
-      status.classList.remove('is-success', 'is-error');
-    }
+    showStatus('Saving your course interest…');
 
     try {
       const response = await fetch(form.action, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload)
       });
+      const result: { error?: unknown; ok?: unknown; submissionId?: unknown } = await response.json().catch(() => ({}));
 
-      const result: { error?: unknown; ok?: unknown } = await response
-        .json()
-        .catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(
-          typeof result.error === 'string'
-            ? result.error
-            : 'The form could not be sent. Please try again.',
-        );
+      if (!response.ok || result.ok !== true || typeof result.submissionId !== 'string') {
+        throw new Error(typeof result.error === 'string' ? result.error : 'The form could not be saved. Please try again.');
       }
 
       form.reset();
-      resetStartedAt();
-
-      if (count) {
-        count.textContent = '0';
-      }
-
-      if (status) {
-        status.textContent =
-          'Thank you—your interests have been recorded.';
-        status.classList.remove('is-error');
-        status.classList.add('is-success');
-      }
+      if (count) count.textContent = '0';
+      showStatus(`Recorded successfully. Your reference is ${result.submissionId}.`, 'success');
+      resetSubmissionSession();
     } catch (error) {
-      if (status) {
-        status.textContent =
-          error instanceof Error
-            ? error.message
-            : 'The form could not be sent. Please try again.';
-
-        status.classList.remove('is-success');
-        status.classList.add('is-error');
-      }
+      showStatus(error instanceof Error ? error.message : 'The form could not be saved. Please try again.', 'error');
     } finally {
       if (button) {
         button.disabled = false;
-        button.textContent = 'Send my interest';
+        button.innerHTML = 'Send my interest <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"></path></svg>';
       }
     }
   });
 </script>
+</BaseLayout>

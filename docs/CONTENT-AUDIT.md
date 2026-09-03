@@ -34,10 +34,7 @@ The audit recorded each page title, visible headings and text, internal and exte
 | `/unmanned-aerial-vehicle-uav` | General UAV taxonomy | Rewrite as a concise learning-topic overview | `/learn/drones` |
 | `/conductivity-temperature-and-depthctd` | Heading only | Remove empty page; retain topic intent | `/learn/sensors` |
 | `/parcel-tracking-global` | Heading only | Remove empty utility page | `/resources` |
-| `/website-builder` | Author profile, experience, teaching approach, phone and protected email | Rewrite factual profile; retain confirmed LinkedIn and phone; do not guess hidden email | `/about` and `/contact` |
-| `/app-privacy` | Index to two policies | Consolidate | `/privacy` |
-| `/app-privacy/privacy-policy` | Website privacy policy | Update for the actual static build and preserve material commitments | `/privacy` |
-| `/app-privacy/iot-stations-privacy-policy` | IoT Stations app policy and two connected domains | Reuse and improve formatting | `/privacy/iot-stations` |
+| `/website-builder` | Author profile, experience, teaching approach, phone and protected email | Rewrite factual profile; use the confirmed Academy4Tech email addresses and public profiles without publishing the personal phone number | `/about` and `/contact` |
 
 ## Confirmed external links reused
 
@@ -47,7 +44,6 @@ The audit recorded each page title, visible headings and text, internal and exte
 - Muhammed Nabeel LinkedIn profile
 - Academy4Tech LinkedIn, Instagram and Facebook pages
 - Official Python, VS Code, Jupyter, PyCharm, Spyder and Thonny sites where relevant
-- IoT Stations dashboard and status domains, only inside the application privacy policy
 
 The legacy `remote.it` dashboard link, Mega download links and Atom editor link were not promoted. They are either contextless, archived, or less trustworthy than official current sources.
 
@@ -60,7 +56,6 @@ The legacy `remote.it` dashboard link, Mega download links and Atom editor link 
 - Real project summaries and three confirmed GitHub repositories.
 - The ROS 1 reference, after restructuring and legacy labelling.
 - The Python playlist and official tool links.
-- The two privacy-policy commitments.
 
 ### Rewritten
 
@@ -68,7 +63,7 @@ The legacy `remote.it` dashboard link, Mega download links and Atom editor link 
 - Project descriptions and equipment lists.
 - Python setup instructions, replacing archived downloads with official sources.
 - UAV/UGV taxonomy.
-- Privacy wording so it matches the new static implementation.
+- Course-interest data-use wording so it matches the form implementation.
 
 ### Removed
 

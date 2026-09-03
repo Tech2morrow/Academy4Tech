@@ -22,8 +22,6 @@
 ├── about
 ├── contact
 ├── search
-├── privacy/
-│   └── iot-stations
 ├── rss.xml
 └── 404
 ```
