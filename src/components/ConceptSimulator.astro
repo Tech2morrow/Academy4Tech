@@ -1,0 +1,304 @@
+---
+interface Props {
+  topic: string;
+}
+
+const { topic } = Astro.props;
+
+const simulations: Record<string, { kind: string; eyebrow: string; title: string; description: string }> = {
+  'visual-guide-robotics': {
+    kind: 'feedback',
+    eyebrow: 'Interactive control loop',
+    title: 'See feedback correct an error',
+    description: 'Move the target and measured-position sliders. The controller compares them and suggests the next correction.'
+  },
+  'visual-guide-python': {
+    kind: 'loop',
+    eyebrow: 'Interactive Python idea',
+    title: 'Watch a loop repeat work',
+    description: 'Choose the number of readings. Each box represents one pass through the same block of code.'
+  },
+  'visual-guide-arduino': {
+    kind: 'pwm',
+    eyebrow: 'Interactive output signal',
+    title: 'Explore PWM brightness control',
+    description: 'Pulse-width modulation switches an output quickly. Duty cycle is the percentage of each cycle spent on.'
+  },
+  'visual-guide-ai': {
+    kind: 'threshold',
+    eyebrow: 'Interactive AI decision',
+    title: 'Move a prediction threshold',
+    description: 'The model confidence stays at 72%. Change the acceptance threshold to see how a product decision can change.'
+  },
+  'visual-guide-electronics': {
+    kind: 'ohm',
+    eyebrow: 'Interactive circuit model',
+    title: 'Explore voltage, resistance and current',
+    description: 'Ohm’s law links three quantities: current equals voltage divided by resistance.'
+  },
+  'visual-guide-ground-robots': {
+    kind: 'rover',
+    eyebrow: 'Interactive steering model',
+    title: 'Steer a two-wheel robot',
+    description: 'Change the left and right wheel speeds. The difference between them determines how the robot turns.'
+  },
+  'visual-guide-sensors': {
+    kind: 'calibration',
+    eyebrow: 'Interactive measurement model',
+    title: 'Calibrate a sensor reading',
+    description: 'Apply an offset and a gain to a raw reading, then compare the corrected result.'
+  }
+};
+
+const simulation = simulations[topic];
+---
+
+{simulation && (
+  <section class="concept-simulator" data-simulator data-kind={simulation.kind} aria-labelledby={`simulator-${simulation.kind}`}>
+    <div class="simulator-heading">
+      <div>
+        <span class="simulator-eyebrow">{simulation.eyebrow}</span>
+        <h2 id={`simulator-${simulation.kind}`}>{simulation.title}</h2>
+      </div>
+      <p>{simulation.description}</p>
+    </div>
+
+    <div class="simulator-workspace">
+      <div class="simulator-controls">
+        {simulation.kind === 'feedback' && (
+          <>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-target">Target position</label><output data-value="target">80°</output></div><input id="sim-target" data-control="target" type="range" min="0" max="180" value="80" /></div>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-measured">Measured position</label><output data-value="measured">48°</output></div><input id="sim-measured" data-control="measured" type="range" min="0" max="180" value="48" /></div>
+          </>
+        )}
+        {simulation.kind === 'loop' && (
+          <div class="simulator-field"><div class="simulator-control-label"><label for="sim-iterations">Number of readings</label><output data-value="iterations">5</output></div><input id="sim-iterations" data-control="iterations" type="range" min="1" max="12" value="5" /></div>
+        )}
+        {simulation.kind === 'pwm' && (
+          <div class="simulator-field"><div class="simulator-control-label"><label for="sim-duty">Duty cycle</label><output data-value="duty">45%</output></div><input id="sim-duty" data-control="duty" type="range" min="0" max="100" value="45" /></div>
+        )}
+        {simulation.kind === 'threshold' && (
+          <div class="simulator-field"><div class="simulator-control-label"><label for="sim-threshold">Acceptance threshold</label><output data-value="threshold">65%</output></div><input id="sim-threshold" data-control="threshold" type="range" min="10" max="95" value="65" /></div>
+        )}
+        {simulation.kind === 'ohm' && (
+          <>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-voltage">Voltage</label><output data-value="voltage">5.0 V</output></div><input id="sim-voltage" data-control="voltage" type="range" min="1" max="12" step="0.1" value="5" /></div>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-resistance">Resistance</label><output data-value="resistance">330 Ω</output></div><input id="sim-resistance" data-control="resistance" type="range" min="100" max="2200" step="10" value="330" /></div>
+          </>
+        )}
+        {simulation.kind === 'rover' && (
+          <>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-left">Left wheel</label><output data-value="left">60%</output></div><input id="sim-left" data-control="left" type="range" min="-100" max="100" value="60" /></div>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-right">Right wheel</label><output data-value="right">35%</output></div><input id="sim-right" data-control="right" type="range" min="-100" max="100" value="35" /></div>
+          </>
+        )}
+        {simulation.kind === 'calibration' && (
+          <>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-raw">Raw reading</label><output data-value="raw">520</output></div><input id="sim-raw" data-control="raw" type="range" min="0" max="1000" value="520" /></div>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-offset">Offset</label><output data-value="offset">−20</output></div><input id="sim-offset" data-control="offset" type="range" min="-100" max="100" value="-20" /></div>
+            <div class="simulator-field"><div class="simulator-control-label"><label for="sim-gain">Gain</label><output data-value="gain">1.10×</output></div><input id="sim-gain" data-control="gain" type="range" min="0.5" max="1.5" step="0.05" value="1.1" /></div>
+          </>
+        )}
+      </div>
+
+      <div class="simulator-result" aria-live="polite">
+        {simulation.kind === 'loop' && <div class="loop-strip" data-loop-strip aria-hidden="true"></div>}
+        {simulation.kind === 'pwm' && <div class="led-demo" data-led aria-hidden="true"><span></span></div>}
+        {simulation.kind === 'threshold' && <div class="confidence-marker" aria-hidden="true"><span>Model confidence</span><strong>72%</strong></div>}
+        {simulation.kind === 'rover' && <div class="rover-demo" data-rover aria-hidden="true"><span class="wheel wheel-left"></span><span class="rover-body"></span><span class="wheel wheel-right"></span></div>}
+        <span class="result-label">Result</span>
+        <strong data-result>Ready</strong>
+        <p data-detail>Move a slider to explore the model.</p>
+        <div class="result-meter" aria-hidden="true"><span data-meter-fill></span></div>
+      </div>
+    </div>
+
+    <p class="simulator-note"><strong>Remember:</strong> this is a simplified learning model, not a hardware design or safety calculator. Real systems also include limits, noise, timing and failure handling.</p>
+  </section>
+)}
+
+<script>
+  const setText = (root: Element, selector: string, value: string) => {
+    const element = root.querySelector(selector);
+    if (element) element.textContent = value;
+  };
+
+  document.querySelectorAll('[data-simulator]').forEach((root) => {
+    const control = (name: string) => root.querySelector<HTMLInputElement>(`[data-control="${name}"]`);
+    const number = (name: string) => Number(control(name)?.value ?? 0);
+    const result = root.querySelector<HTMLElement>('[data-result]');
+    const detail = root.querySelector<HTMLElement>('[data-detail]');
+    const meter = root.querySelector<HTMLElement>('[data-meter-fill]');
+
+    const update = () => {
+      const kind = (root as HTMLElement).dataset.kind;
+      let resultText = '';
+      let detailText = '';
+      let meterValue = 50;
+
+      if (kind === 'feedback') {
+        const target = number('target');
+        const measured = number('measured');
+        const error = target - measured;
+        setText(root, '[data-value="target"]', `${target}°`);
+        setText(root, '[data-value="measured"]', `${measured}°`);
+        resultText = Math.abs(error) < 2 ? 'Target reached' : `${Math.abs(error)}° error`;
+        detailText = Math.abs(error) < 2 ? 'The measurement is close enough to the target.' : `The controller should move ${error > 0 ? 'forward' : 'backward'} and measure again.`;
+        meterValue = Math.max(4, 100 - Math.min(100, Math.abs(error)));
+      }
+
+      if (kind === 'loop') {
+        const iterations = number('iterations');
+        setText(root, '[data-value="iterations"]', String(iterations));
+        const strip = root.querySelector('[data-loop-strip]');
+        strip?.replaceChildren(...Array.from({ length: iterations }, (_, index) => {
+          const item = document.createElement('span');
+          item.textContent = String(index + 1);
+          return item;
+        }));
+        resultText = `${iterations} loop ${iterations === 1 ? 'pass' : 'passes'}`;
+        detailText = `The same instructions process reading 1 through reading ${iterations}.`;
+        meterValue = (iterations / 12) * 100;
+      }
+
+      if (kind === 'pwm') {
+        const duty = number('duty');
+        setText(root, '[data-value="duty"]', `${duty}%`);
+        root.querySelector<HTMLElement>('[data-led]')?.style.setProperty('--duty', `${duty / 100}`);
+        resultText = `${duty}% average output`;
+        detailText = `In every 10 ms cycle, the signal is on for ${(duty / 10).toFixed(1)} ms and off for ${((100 - duty) / 10).toFixed(1)} ms.`;
+        meterValue = duty;
+      }
+
+      if (kind === 'threshold') {
+        const threshold = number('threshold');
+        const confidence = 72;
+        setText(root, '[data-value="threshold"]', `${threshold}%`);
+        const accepted = confidence >= threshold;
+        resultText = accepted ? 'Prediction accepted' : 'Send for review';
+        detailText = accepted
+          ? `72% is above the ${threshold}% threshold. A lower threshold accepts more predictions, including more possible mistakes.`
+          : `72% is below the ${threshold}% threshold. A higher threshold is stricter but may reject useful predictions.`;
+        meterValue = confidence;
+      }
+
+      if (kind === 'ohm') {
+        const voltage = number('voltage');
+        const resistance = number('resistance');
+        const milliamps = (voltage / resistance) * 1000;
+        setText(root, '[data-value="voltage"]', `${voltage.toFixed(1)} V`);
+        setText(root, '[data-value="resistance"]', `${Math.round(resistance)} Ω`);
+        resultText = `${milliamps.toFixed(1)} mA`;
+        detailText = `Current = ${voltage.toFixed(1)} V ÷ ${Math.round(resistance)} Ω. Increasing resistance reduces current when voltage stays the same.`;
+        meterValue = Math.min(100, milliamps * 2.5);
+      }
+
+      if (kind === 'rover') {
+        const left = number('left');
+        const right = number('right');
+        setText(root, '[data-value="left"]', `${left}%`);
+        setText(root, '[data-value="right"]', `${right}%`);
+        const rover = root.querySelector<HTMLElement>('[data-rover]');
+        rover?.style.setProperty('--turn', `${Math.max(-18, Math.min(18, (right - left) / 5))}deg`);
+        if (Math.abs(left - right) < 5) resultText = left >= 0 ? 'Drive nearly straight' : 'Reverse nearly straight';
+        else if (left < 0 && right > 0) resultText = 'Spin left in place';
+        else if (left > 0 && right < 0) resultText = 'Spin right in place';
+        else resultText = left > right ? 'Curve right' : 'Curve left';
+        detailText = `Left wheel ${left}%, right wheel ${right}%. The faster wheel travels farther and pushes the robot into a curve.`;
+        meterValue = Math.min(100, (Math.abs(left) + Math.abs(right)) / 2);
+      }
+
+      if (kind === 'calibration') {
+        const raw = number('raw');
+        const offset = number('offset');
+        const gain = number('gain');
+        const calibrated = (raw + offset) * gain;
+        setText(root, '[data-value="raw"]', String(raw));
+        setText(root, '[data-value="offset"]', `${offset < 0 ? '−' : '+'}${Math.abs(offset)}`);
+        setText(root, '[data-value="gain"]', `${gain.toFixed(2)}×`);
+        resultText = `${calibrated.toFixed(1)} calibrated units`;
+        detailText = `(${raw} ${offset < 0 ? '−' : '+'} ${Math.abs(offset)}) × ${gain.toFixed(2)}. Calibration corrects a known pattern; it does not remove random noise.`;
+        meterValue = Math.max(0, Math.min(100, calibrated / 10));
+      }
+
+      if (result) result.textContent = resultText;
+      if (detail) detail.textContent = detailText;
+      if (meter) meter.style.width = `${meterValue}%`;
+    };
+
+    root.querySelectorAll('input[type="range"]').forEach((input) => input.addEventListener('input', update));
+    update();
+  });
+</script>
+
+<style>
+  .concept-simulator {
+    max-width: 760px;
+    margin: 54px 0 8px;
+    padding: clamp(24px, 4vw, 38px);
+    border: 1px solid var(--line-strong);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 90% 8%, rgba(37, 99, 235, .12), transparent 30%),
+      linear-gradient(145deg, #fff, #fff5ec);
+    box-shadow: 0 18px 48px rgba(92, 55, 24, .1);
+  }
+
+  .simulator-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr);
+    gap: 28px;
+    align-items: end;
+    margin-bottom: 28px;
+  }
+
+  .simulator-heading h2 { margin: 8px 0 0; font-size: clamp(1.65rem, 4vw, 2.25rem); }
+  .simulator-heading p, .simulator-note { color: var(--muted); font-size: .84rem; line-height: 1.65; }
+  .simulator-eyebrow, .result-label { color: var(--cyan); font-size: .66rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+
+  .simulator-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .85);
+    overflow: hidden;
+  }
+
+  .simulator-controls, .simulator-result { padding: clamp(20px, 3vw, 28px); }
+  .simulator-controls { display: grid; gap: 24px; align-content: center; border-right: 1px solid var(--line); }
+  .simulator-field { display: grid; gap: 10px; }
+  .simulator-control-label { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; color: var(--text); font-size: .78rem; font-weight: 750; }
+  .simulator-control-label output { color: var(--cyan); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .simulator-field input { width: 100%; accent-color: var(--cyan); cursor: pointer; }
+
+  .simulator-result { display: flex; min-height: 250px; flex-direction: column; justify-content: center; gap: 10px; }
+  .simulator-result > strong { color: var(--text); font-size: clamp(1.35rem, 3vw, 1.9rem); }
+  .simulator-result > p { min-height: 3.2em; color: var(--muted); font-size: .8rem; line-height: 1.6; }
+  .result-meter { height: 8px; margin-top: 8px; border-radius: 99px; background: var(--surface-3); overflow: hidden; }
+  .result-meter span { display: block; width: 50%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--blue)); transition: width .18s ease; }
+
+  .loop-strip { display: flex; flex-wrap: wrap; gap: 6px; min-height: 32px; margin-bottom: 8px; }
+  .loop-strip span { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 7px; background: var(--surface-2); color: var(--cyan); font-size: .68rem; font-weight: 850; }
+  .led-demo { display: grid; width: 70px; height: 70px; margin-bottom: 8px; place-items: center; border-radius: 50%; background: #eef1f4; }
+  .led-demo span { width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 104, 0, calc(.12 + var(--duty, .45) * .88)); box-shadow: 0 0 calc(34px * var(--duty, .45)) rgba(255, 104, 0, .72); }
+  .confidence-marker { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; padding: 12px 14px; border-radius: 11px; background: var(--surface-2); color: var(--muted); font-size: .72rem; }
+  .confidence-marker strong { color: var(--blue); font-size: 1.2rem; }
+  .rover-demo { --turn: 0deg; position: relative; display: grid; width: 118px; height: 70px; grid-template-columns: 16px 1fr 16px; gap: 6px; align-items: center; margin: 0 0 12px 20px; transform: rotate(var(--turn)); transition: transform .18s ease; }
+  .rover-body { height: 62px; border: 2px solid var(--cyan); border-radius: 16px 16px 9px 9px; background: var(--surface-2); }
+  .wheel { height: 48px; border-radius: 7px; background: var(--text); }
+
+  .simulator-note { margin: 18px 0 0; }
+  .simulator-note strong { color: var(--text); }
+
+  @media (max-width: 680px) {
+    .simulator-heading, .simulator-workspace { grid-template-columns: 1fr; }
+    .simulator-heading { gap: 10px; }
+    .simulator-controls { border-right: 0; border-bottom: 1px solid var(--line); }
+    .simulator-result { min-height: 220px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .result-meter span, .rover-demo { transition: none; }
+  }
+</style>

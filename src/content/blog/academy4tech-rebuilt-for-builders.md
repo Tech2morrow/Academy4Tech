@@ -3,6 +3,7 @@ title: "Academy4Tech, Rebuilt for Builders"
 description: "How the new Academy4Tech organizes robotics, IoT, programming and embedded-systems learning around practical work."
 category: "Academy4Tech News"
 tags: ["Academy4Tech", "Robotics", "IoT", "Learning"]
+image: "/images/ai/community-workshop.webp"
 imageAlt: "Academy4Tech engineering learning system illustration"
 featured: true
 draft: false

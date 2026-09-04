@@ -3,6 +3,7 @@ title: "From Prototype to Autonomous Robot: A Practical Sequence"
 description: "A staged way to move from a powered chassis to a measurable, controllable and eventually autonomous robot."
 category: "Robotics"
 tags: ["Robotics", "ROS", "Sensors", "Testing"]
+image: "/images/learning/ground-robots-3d.jpg"
 imageAlt: "Technical illustration representing a mobile robot development sequence"
 featured: false
 draft: false

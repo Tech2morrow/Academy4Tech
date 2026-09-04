@@ -3,6 +3,7 @@ title: "Autonomous Transportation and the Engineering Opportunity"
 description: "A concise migration of Academy4Tech's legacy note on Dubai's autonomous transportation strategy."
 category: "Engineering"
 tags: ["Autonomous Systems", "Dubai", "Robotics", "Transportation"]
+image: "/images/learning/drones-3d.jpg"
 imageAlt: "Technical illustration representing an autonomous transportation network"
 featured: true
 draft: false
