@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+
+export async function getStaticPaths() {
+  const policies = await getCollection('privacyPolicies');
+  return policies.map((policy) => ({ params: { slug: policy.id }, props: { policy } }));
+}
+
+interface Props { policy: CollectionEntry<'privacyPolicies'>; }
+const { policy } = Astro.props;
+const { Content, headings } = await render(policy);
+const effectiveDate = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
+}).format(policy.data.effectiveDate);
+---
+<BaseLayout title={policy.data.title} description={policy.data.description} type="article">
+  <section class="page-hero">
+    <div class="shell">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Android apps', href: '/apps' }, { label: 'App privacy', href: '/privacy/app' }, { label: policy.data.appName }]} />
+      <div class="eyebrow">Effective {effectiveDate}</div>
+      <h1>{policy.data.title}.</h1>
+      <p>{policy.data.description}</p>
+    </div>
+  </section>
+
+  <div class="shell article-shell">
+    <article class="article prose"><Content /></article>
+    <aside class="article-aside">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ul>{headings.filter((heading) => heading.depth <= 3).map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul>
+      </nav>
+    </aside>
+  </div>
+</BaseLayout>

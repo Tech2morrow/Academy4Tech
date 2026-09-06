@@ -1,0 +1,28 @@
+---
+appName: New App
+title: New App privacy policy
+description: A short description of what this app's privacy policy covers.
+effectiveDate: 2026-09-06
+identifier: com.example.newapp
+---
+## Summary
+
+Add the app-specific privacy summary here.
+
+## Information the app processes
+
+Explain what information the app processes and why.
+
+## Storage and sharing
+
+Explain where information is stored and when it may be shared.
+
+## User choices and deletion
+
+Explain the controls available to users and how data can be deleted.
+
+## Contact
+
+Academy4Tech<br />
+United Arab Emirates<br />
+[info@academy4tech.com](mailto:info@academy4tech.com)

@@ -2,39 +2,20 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Icon from '@/components/Icon.astro';
-import { SITE } from '@/data/site';
+import { getCollection } from 'astro:content';
 
-const policies = [
-  {
-    name: 'Academy4Tech',
-    href: '#academy4tech-policy',
-    effective: '3 September 2026',
-    description: 'Privacy details for the Academy4Tech Android learning app and its optional course-interest form.',
-    packageName: 'com.academy4tech.versionfirst'
-  },
-  {
-    name: 'Car Buddy',
-    href: '/privacy/app/car-buddy',
-    effective: '6 September 2026',
-    description: 'Privacy details for local vehicle records, reminders, exports, Drive backup, sound checks and advertising.',
-    packageName: 'Vehicle maintenance companion'
-  },
-  {
-    name: 'Pip Notes',
-    href: '/privacy/app/pip-notes',
-    effective: '18 August 2026',
-    description: 'Privacy details for private on-device notes, reminders and optional Google Drive synchronization.',
-    packageName: 'com.pipnotes.app'
-  }
-];
+const policies = (await getCollection('privacyPolicies')).sort((a, b) => a.data.order - b.data.order);
+const formatDate = (date: Date) => new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
+}).format(date);
 ---
-<BaseLayout title="App Privacy Policies" description="Privacy policies for Android apps developed by Academy4Tech, including Academy4Tech, Car Buddy and Pip Notes.">
+<BaseLayout title="App Privacy Policies" description="Find the separate privacy policy for every app developed by Academy4Tech.">
   <section class="page-hero">
     <div class="shell">
       <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Android apps', href: '/apps' }, { label: 'App privacy' }]} />
       <div class="eyebrow">Privacy centre</div>
       <h1>App privacy policies.</h1>
-      <p>Choose an Academy4Tech app to learn what information it processes, where that information is stored and the controls available to you.</p>
+      <p>Every app has an independent policy. Choose an app to learn what information it processes, where that information is stored and the controls available to you.</p>
     </div>
   </section>
 
@@ -42,60 +23,20 @@ const policies = [
     <div class="shell">
       <div class="section-head">
         <div><div class="eyebrow">Choose an app</div><h2>Privacy details by product.</h2></div>
-        <p>Each policy reflects the features and services used by that specific app.</p>
+        <p>Adding or updating one app policy does not change any of the others.</p>
       </div>
       <div class="topic-grid privacy-policy-grid">
         {policies.map((policy) => (
-          <a class="topic-card" href={policy.href}>
-            <span class="topic-icon"><Icon name="board" /></span>
-            <small>{policy.packageName}</small>
-            <h3>{policy.name}</h3>
-            <p>{policy.description}</p>
+          <a class="topic-card" href={`/privacy/app/${policy.id}`}>
+            <span class="topic-icon"><Icon name={policy.data.icon} /></span>
+            <small>{policy.data.identifier ?? 'Academy4Tech app'}</small>
+            <h3>{policy.data.appName}</h3>
+            <p>{policy.data.description}</p>
             <span class="text-link">Read policy <Icon name="arrow" size={17} /></span>
-            <span class="policy-date">Effective {policy.effective}</span>
+            <span class="policy-date">Effective {formatDate(policy.data.effectiveDate)}</span>
           </a>
         ))}
       </div>
-    </div>
-  </section>
-
-  <section class="section surface-section" id="academy4tech-policy">
-    <div class="shell">
-      <div class="eyebrow">Effective 3 September 2026</div>
-      <h2 class="policy-heading">Academy4Tech app privacy policy.</h2>
-      <p class="article-lead">This policy covers the Academy4Tech Android app published under <strong>com.academy4tech.versionfirst</strong>.</p>
-      <article class="article prose">
-        <h2>Summary</h2>
-        <p>The app does not contain advertising or analytics SDKs and does not ask for location, camera, microphone, contacts or device-storage permissions. Topic bookmarks and a selected learning level remain on the device. The app connects to academy4tech.com to load learning content.</p>
-
-        <h2>Website content</h2>
-        <p>When a learner opens a lesson, project, tutorial, article or community page, the app loads that page from academy4tech.com over HTTPS. The website host may process ordinary technical request data such as IP address, browser information, requested page and time for security and delivery.</p>
-
-        <h2>Course-interest form</h2>
-        <p>Submitting the optional course-interest form sends the information entered directly to Academy4Tech. This can include name, email address, role, learner age group, country or region, experience level, selected interests, preferred format and an optional message. The form also records a submission reference and submission time.</p>
-        <p>This information is used for course planning and relevant follow-up. It is not sold. A parent or guardian must submit the form for a learner under 16.</p>
-
-        <h2>A4T Buddy</h2>
-        <p>Buddy's chat and recommendations run on the device using the Academy4Tech catalog. Chat text is not sent to a generative-AI provider or stored by the app. Opening a Buddy recommendation loads the selected Academy4Tech page in the same way as other website content.</p>
-
-        <h2>Device storage and cache</h2>
-        <p>The app stores only topic bookmarks, a selected experience level, a cached website search index and cached website images. Android may remove cached files automatically. Uninstalling the app removes this local data. Course-interest submissions are stored by Academy4Tech rather than in the app's local preferences.</p>
-
-        <h2>Sharing and retention</h2>
-        <p>Academy4Tech does not sell personal information. Service providers used to host and secure academy4tech.com may process data only to provide those services. Course-interest information is kept only as long as reasonably needed for course planning, follow-up, security and legal obligations.</p>
-
-        <h2>Children</h2>
-        <p>Academy4Tech provides educational material to a broad audience. The course-interest form requires a parent or guardian to submit for a learner under 16. The app does not knowingly use behavioral advertising or profiling for children.</p>
-
-        <h2>Your choices</h2>
-        <p>Learners can use the built-in catalog and Buddy without submitting personal details. App storage can be cleared, or the app can be uninstalled, to remove local preferences and cache. To ask about a course submission or request access, correction or deletion, email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
-
-        <h2>Security and policy changes</h2>
-        <p>Academy4Tech uses HTTPS for app-to-website traffic and limits in-app browsing to Academy4Tech pages. No system is completely secure. Material policy changes will be reflected on this page with an updated effective date.</p>
-
-        <h2>Contact</h2>
-        <p>Academy4Tech<br />United Arab Emirates<br /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
-      </article>
     </div>
   </section>
 </BaseLayout>
@@ -105,7 +46,5 @@ const policies = [
   .privacy-policy-grid .topic-card { min-height: 330px; }
   .privacy-policy-grid small { margin: -15px 0 12px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .65rem; overflow-wrap: anywhere; }
   .policy-date { margin-top: 12px; color: var(--muted); font-size: .68rem; font-weight: 750; }
-  .policy-heading { max-width: 760px; }
-  .article-lead { max-width: 760px; margin-top: 24px; }
   @media (max-width: 900px) { .privacy-policy-grid { grid-template-columns: 1fr; } }
 </style>

@@ -51,4 +51,17 @@ const tutorials = defineCollection({
   })
 });
 
-export const collections = { blog, projects, tutorials };
+const privacyPolicies = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/privacy' }),
+  schema: z.object({
+    appName: z.string(),
+    title: z.string(),
+    description: z.string(),
+    effectiveDate: z.coerce.date(),
+    identifier: z.string().optional(),
+    icon: z.string().default('board'),
+    order: z.number().default(100)
+  })
+});
+
+export const collections = { blog, projects, tutorials, privacyPolicies };
