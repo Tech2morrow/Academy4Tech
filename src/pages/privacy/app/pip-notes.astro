@@ -1,0 +1,52 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { SITE } from '@/data/site';
+
+const sections = [
+  ['information', 'Information we process'],
+  ['drive-sync', 'Optional Google Drive synchronization'],
+  ['data-use', 'Data use and sharing'],
+  ['permissions', 'Permissions and security'],
+  ['deletion', 'Deletion'],
+  ['contact', 'Contact']
+];
+---
+<BaseLayout title="Pip Notes Privacy Policy" description="Privacy policy for Pip Notes, an Academy4Tech note-taking app with optional Google Drive synchronization.">
+  <section class="page-hero">
+    <div class="shell">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Android apps', href: '/apps' }, { label: 'App privacy', href: '/privacy/app' }, { label: 'Pip Notes' }]} />
+      <div class="eyebrow">Effective 18 August 2026</div>
+      <h1>Privacy Policy — Pip Notes.</h1>
+      <p>Academy4Tech operates Pip Notes, a note-taking application with optional Google Drive synchronization.</p>
+    </div>
+  </section>
+
+  <div class="shell article-shell">
+    <article class="article prose">
+      <h2 id="information">Information we process</h2>
+      <p>Pip Notes works without an account and stores notes privately on your device by default. Notes can include titles, text, drawings, checklists, colors, reminder dates, and organization settings. We use this information only to provide note-taking features.</p>
+
+      <h2 id="drive-sync">Optional Google Drive synchronization</h2>
+      <p>Google Drive sync is off by default. If you choose to connect Google, Pip Notes requests the narrow <code>drive.appdata</code> permission and stores a <code>pip_notes_backup.json</code> backup in your Google Drive hidden app-data folder. Pip Notes cannot view or manage your other Drive files. We do not operate a server that receives or stores synced notes. Your Google account email, display name, and profile image URL are used only to show the connected account and are stored locally on the device. Google processes Drive information under its own <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">privacy policy</a>.</p>
+
+      <h2 id="data-use">Data use and sharing</h2>
+      <p>We do not sell, rent, trade, advertise with, or profile your note content. Pip Notes has no advertising, analytics, crash-reporting, or Academy4Tech backend. If you use Android Share, the selected recipient's privacy policy applies.</p>
+
+      <h2 id="permissions">Permissions and security</h2>
+      <p>Notification permission is requested only for reminders. Internet access is used only for optional Google Drive sync. Text-to-speech runs through Android's device service and the app does not record audio. Drive communication uses HTTPS/TLS; note backups are not additionally end-to-end encrypted.</p>
+
+      <h2 id="deletion">Deletion</h2>
+      <p>Delete notes in Pip Notes and run Sync to remove them from the cloud backup. Disconnect Google in the Sync tab to revoke future Drive access; this does not delete local notes or the existing cloud backup. You can remove all Pip Notes app data through your Google Account/Drive app-data controls or contact us for help.</p>
+
+      <h2 id="contact">Contact</h2>
+      <p>Academy4Tech<br />United Arab Emirates<br />Website: <a href={SITE.url}>{SITE.url.replace('https://', '')}</a><br />Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+    </article>
+    <aside class="article-aside">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ul>{sections.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}</ul>
+      </nav>
+    </aside>
+  </div>
+</BaseLayout>
